@@ -9,6 +9,7 @@ namespace SkylineEngine
     public class Application : ApplicationBase
     {
         public event RenderEvent render;
+        public event PostRenderEvent postRender;
         private ImGuiControl imGuiControl;
 
         [DllImport("imgui", CallingConvention = CallingConvention.Cdecl)]
@@ -66,8 +67,9 @@ namespace SkylineEngine
 
         protected override void OnRender()
         {
+            render?.Invoke();
             RenderPipeline.Update();
-            render?.Invoke();            
+            postRender?.Invoke();
         }
 
         protected override void OnRenderGUI()

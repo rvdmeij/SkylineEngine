@@ -11,6 +11,7 @@ Unity inspired game engine written in C#
 
 ```csharp
 using SkylineEngine;
+using OpenTK.Graphics.OpenGL;
 
 namespace SkylineEngineApplication
 {
@@ -23,6 +24,7 @@ namespace SkylineEngineApplication
         {
             application = new Application("Skyline Engine", 512, 512, 3, 3, false);
             application.created += OnCreated;
+            application.render += OnRender;
             application.Run();            
         }
 
@@ -30,6 +32,12 @@ namespace SkylineEngineApplication
         {
             gameObject = new GameObject();
             gameObject.AddComponent<GameManager>();
+        }
+
+        static void OnRender()
+        {
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            GL.ClearColor(0, 0, 0, 1);
         }
     }
 

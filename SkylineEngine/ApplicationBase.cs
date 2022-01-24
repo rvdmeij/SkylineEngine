@@ -7,6 +7,7 @@ namespace SkylineEngine
     public delegate void CreatedEvent();
     public delegate void CloseEvent();
     public delegate void RenderEvent();
+    public delegate void PostRenderEvent();
     public delegate void GUIEvent();
     public delegate void UpdateEvent();
     public delegate void KeyDownEvent(SDL.SDL_Scancode scancode);
