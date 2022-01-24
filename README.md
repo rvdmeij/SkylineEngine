@@ -36,6 +36,7 @@ namespace SkylineEngineApplication
     public class GameManager : MonoBehaviour
     {
         private Camera camera;
+        private GameObject cube;
 
         void Start()
         {
@@ -45,11 +46,14 @@ namespace SkylineEngineApplication
 
             var firstPerson = camera.gameObject.AddComponent<FirstPersonController>();
             firstPerson.speed *= 50;
-            firstPerson.zoomSpeed *= 200;
+            firstPerson.zoomSpeed *= 200;            
 
             Light.main.strength = 1.0f;
             Light.main.transform.position = new Vector3(0, 1000, -500);
             Light.main.transform.rotation = new Quaternion(-0.26127627f,-0.00029115385f,0.26208368f,-0.9291085f);
+
+            cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.zero;
         }
 
         //Only call ImGui/GUI functions from void OnGUI
