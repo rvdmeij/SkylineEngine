@@ -36,7 +36,6 @@ namespace SkylineEngineApplication
     public class GameManager : MonoBehaviour
     {
         private Camera camera;
-        private GameObject cube;
 
         void Start()
         {
