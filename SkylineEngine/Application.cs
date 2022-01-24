@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using DearImGui;
 using OpenTK.Graphics.OpenGL;
 using SDL2;
@@ -9,6 +10,9 @@ namespace SkylineEngine
     {
         public event RenderEvent render;
         private ImGuiControl imGuiControl;
+
+        [DllImport("imgui", CallingConvention = CallingConvention.Cdecl)]
+        private static extern uint GLInitGlew(bool experimental);
 
         public Application(string title, int width, int height, int versionMajor, int versionMinor, bool vsync = true) 
         : base(title, width, height, versionMajor, versionMinor, vsync)
@@ -31,6 +35,7 @@ namespace SkylineEngine
             RenderPipeline.Initialize();
             PhysicsPipeline.Initialize();
 
+            GLInitGlew(true);
             imGuiControl = new ImGuiControl(mainWindow);
             imGuiControl.onGUI += OnGUI;
 

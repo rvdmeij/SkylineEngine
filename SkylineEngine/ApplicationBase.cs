@@ -1,7 +1,6 @@
 using System;
 using SDL2;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace SkylineEngine
 {
@@ -22,9 +21,6 @@ namespace SkylineEngine
 
     public class ApplicationBase
     {
-        [DllImport("imgui", CallingConvention = CallingConvention.Cdecl)]
-        private static extern uint GLInitGlew(bool experimental);
-
         public event CreatedEvent created;
         public event CloseEvent close;        
         
@@ -99,8 +95,7 @@ namespace SkylineEngine
             renderer = SDL.SDL_GetRenderer(mainWindow);           
             SDL.SDL_GL_MakeCurrent(mainWindow, mainContext);
 
-            InitializeGlBindings();
-            GLInitGlew(true);
+            InitializeGlBindings();            
 
             SDL.SDL_GL_SetSwapInterval(vsync ? 1 : 0);
             return true;
