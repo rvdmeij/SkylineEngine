@@ -1,6 +1,8 @@
 # SkylineEngine
 Unity inspired game engine written in C#
 
+![](SkylineEngineExample.png)
+
 # Dependencies
 - https://www.nuget.org/packages/OpenTK/4.0.0
 - https://www.nuget.org/packages/AssimpNet/4.1.0
@@ -8,6 +10,7 @@ Unity inspired game engine written in C#
 - https://github.com/libsdl-org/SDL (build from source or install through package manager)
 - https://github.com/japajoe/imgui (build from source)
 
+# Example
 
 ```csharp
 using SkylineEngine;
