@@ -6,18 +6,18 @@ namespace SkylineEngine
     {
         private static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
 
-        public static uint Load(string filepath)
+        public static int Load(string filepath)
         {
             return Load(filepath, filepath);
         }
 
-        public static uint Load(string filepath, string name)
+        public static int Load(string filepath, string name)
         {
             if(!textures.ContainsKey(name))
             {
                 textures[name] = new Texture(filepath);
-                uint textureID = textures[name].textureId;
-                Debug.Log("Loaded " + filepath + " with ID " +textureID);
+                int textureID = textures[name].textureId;
+                Debug.Log("Loaded texture " + filepath + " with ID " +textureID);
                 return textureID;
             }
             else
@@ -26,13 +26,28 @@ namespace SkylineEngine
             }
         }
 
-        public static uint Load(int width, int height, string name)
+        public static int Load(int width, int height, string name)
         {
             if(!textures.ContainsKey(name))
             {
                 textures[name] = new Texture(width, height);
-                uint textureID = textures[name].textureId;
-                Debug.Log("Loaded " + name + " with ID " + textureID);
+                int textureID = textures[name].textureId;
+                Debug.Log("Loaded texture " + name + " with ID " + textureID);
+                return textureID;
+            }
+            else
+            {
+                return GetTexture(name).textureId;
+            }
+        }
+
+        public static int Load(int width, int height, byte[] data, string name)
+        {
+            if(!textures.ContainsKey(name))
+            {
+                textures[name] = new Texture(width, height, data, name);
+                int textureID = textures[name].textureId;
+                Debug.Log("Loaded texture " + name + " with ID " + textureID);
                 return textureID;
             }
             else
@@ -58,7 +73,7 @@ namespace SkylineEngine
             return null;
         }
 
-        public static Texture GetTexture(uint textureId)
+        public static Texture GetTexture(int textureId)
         {
             Texture texture = null;
             foreach (var item in textures)

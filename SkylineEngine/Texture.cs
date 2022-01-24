@@ -17,7 +17,7 @@ namespace SkylineEngine
         private string m_name;
         private byte[] m_imageData;
 
-        public uint textureId { get { return m_texture; } }
+        public int textureId { get { return (int)m_texture; } }
         public int width { get { return m_width; } }
         public int height { get { return m_height; } }
         public string name { get { return m_name; } }
@@ -26,9 +26,9 @@ namespace SkylineEngine
         public static readonly float MaxAniso;
         public const GetPName MAX_TEXTURE_MAX_ANISOTROPY = (GetPName)0x84FF;
 
-        public uint GetId()
+        public int GetId()
         {
-            return (uint)m_texture;
+            return (int)m_texture;
         }
 
         static Texture()
@@ -52,7 +52,7 @@ namespace SkylineEngine
             GL.GenTextures(1, out m_texture);
         }
 
-        public Texture(int width, int height, byte[] data = null)
+        public Texture(int width, int height, byte[] data = null, string name = "texture")
         {
             this.m_width = width;
             this.m_height = height;
@@ -68,9 +68,9 @@ namespace SkylineEngine
                 {
                     for (int x = 0; x < width; x++)
                     {
-                        m_imageData[index + 0] = 0;
-                        m_imageData[index + 1] = 0;
-                        m_imageData[index + 2] = 0;
+                        m_imageData[index + 0] = 255;
+                        m_imageData[index + 1] = 255;
+                        m_imageData[index + 2] = 255;
                         m_imageData[index + 3] = 255;
                         index += 4;
                     }

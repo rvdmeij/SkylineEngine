@@ -11,13 +11,28 @@ namespace SkylineEngine
             return Load(filepath, filepath);
         }
 
+        public static int Load(string vertexSource, string fragmentSource, string name)
+        {
+            if(!shaders.ContainsKey(name))
+            {
+                shaders[name] = new Shader(vertexSource, fragmentSource);
+                int shaderID = shaders[name].program;
+                Debug.Log("Loaded shader " + name + " with ID " + shaderID);
+                return shaderID;
+            }
+            else
+            {
+                return GetShader(name).program;
+            }
+        }
+
         public static int Load(string filepath, string name)
         {
             if(!shaders.ContainsKey(name))
             {
                 shaders[name] = new Shader(filepath);
                 int shaderID = shaders[name].program;
-                Debug.Log("Loaded " + filepath + " with ID " + shaderID);
+                Debug.Log("Loaded shader " + filepath + " with ID " + shaderID);
                 return shaderID;
             }
             else

@@ -5,8 +5,6 @@ namespace SkylineEngine
 {
     public static class Resources
     {
-
-
         public static void LoadAll<T>(List<string> resources)
         {
             if(typeof(T) == typeof(Texture))
@@ -25,13 +23,37 @@ namespace SkylineEngine
             }
         }
 
+        public static Shader LoadShader(string vertexSource, string fragmentSource, string name)
+        {
+            int id = ShaderManager.Load(vertexSource, fragmentSource, name);
+
+            if( id > 0)
+            {
+                return ShaderManager.GetShader(id);
+            }
+
+            return null;
+        }
+
+        public static Texture LoadTexture(int width, int height, byte[] data, string name)
+        {
+            int id = TextureManager.Load(width, height, data, name);
+
+            if(id > 0)
+            {
+                return TextureManager.GetTexture(id);
+            }
+            
+            return null;
+        }
+
         public static T Load<T>(string resourcePath) where T : Resource
         {
             Type type = typeof(T);
 
             if (type == typeof(Texture))
             {
-                uint id = TextureManager.Load(resourcePath, resourcePath);
+                int id = TextureManager.Load(resourcePath, resourcePath);
 
                 if (id > 0)
                 {

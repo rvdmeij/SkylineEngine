@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
+using SkylineEngine.Shaders;
 
 namespace SkylineEngine
 {
@@ -169,7 +170,7 @@ namespace SkylineEngine
         {
             skybox = new Skybox();
 
-            skyboxShader = Resources.Load<Shader>("res/Shaders/Skybox.shader");
+            skyboxShader = Resources.LoadShader(SkyboxShader.vertex, SkyboxShader.fragment, "Skybox");
 
             skybox.Load(faces.front, faces.back, faces.top, faces.bottom, faces.left, faces.right);
             skybox.SetShader(skyboxShader);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SkylineEngine.Shaders;
 
 namespace SkylineEngine
 {
@@ -149,7 +150,9 @@ namespace SkylineEngine
         {
             Vector3 scale = new Vector3(scaleX, scaleY, scaleZ);
 
-            string shaderPath = "res/Shaders/Default.shader";
+            //string shaderPath = "res/Shaders/Default.shader";
+
+            Texture texture = Resources.LoadTexture(2, 2, null, "Default");
 
             GameObject g = new GameObject();
             g.AddComponent<MeshRenderer>();            
@@ -161,34 +164,35 @@ namespace SkylineEngine
             material.uvScale = new Vector2(1.0f, 1.0f);
             material.skyColor = new Color32(255, 255, 255, 255);
             material.diffuseColor = new Color32(255, 255, 255, 255);
-            material.textures.Add(Resources.Load<Texture>("res/Textures/Default.png"));
+            //material.textures.Add(Resources.Load<Texture>("res/Textures/Default.png"));
+            material.textures.Add(texture);
 
             switch (type)
             {
                 case PrimitiveType.Capsule:
-                    material.shader = Resources.Load<Shader>(shaderPath);
+                    material.shader = Resources.LoadShader(DefaultShader.vertex, DefaultShader.fragment, "Default");
                     filter.mesh = MeshPrimitive.CreateCapsule(scale);
                     break;
                 case PrimitiveType.Cube:
-                    material.shader = Resources.Load<Shader>(shaderPath);
+                    material.shader = Resources.LoadShader(DefaultShader.vertex, DefaultShader.fragment, "Default");
                     filter.mesh = MeshPrimitive.CreateCube(scale);
                     break;
                 case PrimitiveType.Cylinder:
-                    material.shader = Resources.Load<Shader>(shaderPath);
+                    material.shader = Resources.LoadShader(DefaultShader.vertex, DefaultShader.fragment, "Default");
                     filter.mesh = MeshPrimitive.CreateCylinder(scale);                
                     break;
                 case PrimitiveType.Plane:
-                    material.shader = Resources.Load<Shader>(shaderPath);
+                    material.shader = Resources.LoadShader(DefaultShader.vertex, DefaultShader.fragment, "Default");
                     filter.mesh = MeshPrimitive.CreatePlane(scale);
                     break;
                 case PrimitiveType.Sphere:
-                    material.shader = Resources.Load<Shader>(shaderPath);
+                    material.shader = Resources.LoadShader(DefaultShader.vertex, DefaultShader.fragment, "Default");
                     filter.mesh = MeshPrimitive.CreateSphere(scale);
                     break;
                 case PrimitiveType.Quad:
                     break;
                 case PrimitiveType.Plane2D:
-                    material.shader = Resources.Load<Shader>(shaderPath);
+                    material.shader = Resources.LoadShader(DefaultShader.vertex, DefaultShader.fragment, "Default");
                     filter.mesh = MeshPrimitive.CreatePlane2D(scale);
                     break;
                 case PrimitiveType.Billboard:
