@@ -53,8 +53,8 @@ namespace SkylineEngineApplication
             camera.transform.position = new Vector3(0, 1, 5);
 
             var firstPerson = camera.gameObject.AddComponent<FirstPersonController>();
-            firstPerson.speed *= 50;
-            firstPerson.zoomSpeed *= 200;            
+            firstPerson.speed *= 5;
+            firstPerson.zoomSpeed *= 2;
 
             Light.main.strength = 1.0f;
             Light.main.transform.position = new Vector3(0, 1000, -500);
@@ -62,6 +62,22 @@ namespace SkylineEngineApplication
 
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = Vector3.zero;
+
+            LoadSkybox();
+        }
+
+        //These textures are not included in this project
+        void LoadSkybox()
+        {
+            string left = "res/Textures/Skyboxes/Sahara/left.tga";
+            string right = "res/Textures/Skyboxes/Sahara/right.tga";
+            string top = "res/Textures/Skyboxes/Sahara/top.tga";
+            string bottom = "res/Textures/Skyboxes/Sahara/bottom.tga";
+            string front = "res/Textures/Skyboxes/Sahara/front.tga";
+            string back = "res/Textures/Skyboxes/Sahara/back.tga";
+
+            SkyboxFaces faces = new SkyboxFaces(left, right, top, bottom, front, back);
+            RenderPipeline.LoadSkybox(faces);
         }
 
         //Only call ImGui/GUI functions from void OnGUI
