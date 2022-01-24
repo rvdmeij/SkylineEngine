@@ -50,7 +50,7 @@ namespace SkylineEngineApplication
         {
             camera = Camera.main;            
             camera.farClipPlane = 10000.0f;
-            camera.transform.position = new Vector3(0, 0, 0);
+            camera.transform.position = new Vector3(0, 1, 5);
 
             var firstPerson = camera.gameObject.AddComponent<FirstPersonController>();
             firstPerson.speed *= 50;
