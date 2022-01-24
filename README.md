@@ -2,10 +2,11 @@
 Unity inspired game engine written in C#
 
 # Dependencies
-https://www.nuget.org/packages/OpenTK/4.0.0
-https://www.nuget.org/packages/AssimpNet/4.1.0
-https://www.nuget.org/packages/BulletSharp.NetCore/
-https://github.com/japajoe/imgui
+- https://www.nuget.org/packages/OpenTK/4.0.0
+- https://www.nuget.org/packages/AssimpNet/4.1.0
+- https://www.nuget.org/packages/BulletSharp.NetCore/
+- https://github.com/japajoe/imgui
+
 
 ```csharp
 using SkylineEngine;
