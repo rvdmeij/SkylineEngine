@@ -24,14 +24,18 @@ uniform mat4 u_Projection;
 uniform vec3 u_LightDirection;
 uniform vec3 u_LightPosition;
 uniform vec2 u_UVScale;
+uniform vec4 u_clippingPlane;
 
 float fogDensity = 0.0000002;
 float fogGradient = 1.5;
+
 
 void main()
 {
     vec4 worldPosition = u_Projection * u_View * u_Model * vec4(position, 1.0);
     vec4 positionRelativeToCam = u_View * worldPosition;
+
+    //gl_ClipDistance[0] = dot(worldPosition, u_clippingPlane);
 
     LightDirection  = normalize(u_LightDirection);
     LightPosition = u_LightPosition;

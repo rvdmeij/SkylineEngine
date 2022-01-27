@@ -16,6 +16,7 @@ uniform mat4 u_Model;
 uniform mat4 u_View;
 uniform mat4 u_Projection;
 uniform float u_Time;
+uniform vec4 u_clippingPlane;
 
 out vec2 TexCoord0;
 
@@ -25,12 +26,15 @@ const float PI = 3.14159;
 
 void main()
 {
+	vec4 worldPosition = u_Projection * u_View * u_Model * vec4(a_position, 1.0);
     TexCoord0 = a_uv;
     
     float distance = length(a_position);
     float y = sin(gl_VertexID * u_Time * 0.001f) * 0.25f;
     vec3 pos = a_position;
     pos.y = y;
+
+	//gl_ClipDistance[0] = dot(worldPosition, u_clippingPlane);
 
     gl_Position = u_Projection * u_View * u_Model * vec4(pos, 1.0);
 }";

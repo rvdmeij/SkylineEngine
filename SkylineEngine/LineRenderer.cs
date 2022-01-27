@@ -140,5 +140,10 @@ namespace SkylineEngine
                 GL.Disable(EnableCap.DepthTest);
             }
         }
+
+        public override void Render(Material material)
+        {
+
+        }
     }
 }

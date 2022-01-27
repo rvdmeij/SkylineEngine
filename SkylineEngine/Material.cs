@@ -189,6 +189,8 @@ namespace SkylineEngine
             if(uniformStrength != null)
                 shader.SetFloat(uniformStrength.location, strength);
 
+            shader.SetFloat4("u_clippingPlane", new Vector4(0, 1, 0, 15));
+
             if (uniformTextures != null)
             {
                 int unit = 0;

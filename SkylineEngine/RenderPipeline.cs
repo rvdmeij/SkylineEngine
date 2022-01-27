@@ -15,6 +15,17 @@ namespace SkylineEngine
         private static GameObject lightObject;
         private static Skybox skybox;
         private static Shader skyboxShader;
+        private static WaterFrameBuffer waterFrameBuffer;
+
+        public static int FrameBufferReflectionTexture
+        {
+            get 
+            { 
+                if(waterFrameBuffer == null)
+                    return 0;
+                return waterFrameBuffer.ReflectionTexture; 
+            }
+        }
 
         public static void Initialize()
         {
@@ -24,7 +35,14 @@ namespace SkylineEngine
             camera = camObject.AddComponent<Camera>();
             lightObject.AddComponent<Light>();
 
+            waterFrameBuffer = new WaterFrameBuffer();
+
             Debug.Log("RenderPipeline initialized");
+        }
+
+        public static void Dispose()
+        {
+            waterFrameBuffer.Dispose();
         }
 
         public static List<MeshRenderer> GetMeshRenderers() 
@@ -37,6 +55,18 @@ namespace SkylineEngine
             if (camera == null)
                 return;
 
+            //GL.Enable(EnableCap.ClipDistance0);
+            
+            waterFrameBuffer.BindReflectionFrameBuffer();
+            Render();
+            waterFrameBuffer.UnbindCurrentFrameBuffer();
+            
+            //GL.Disable(EnableCap.ClipDistance0);
+            Render();
+        }
+
+        private static void Render()
+        {
             if(skybox != null)
             {
                 RenderSkybox();

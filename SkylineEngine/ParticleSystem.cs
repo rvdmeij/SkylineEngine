@@ -218,6 +218,11 @@ namespace SkylineEngine
             GL.Enable(EnableCap.CullFace);
         }
 
+        public override void Render(Material material)
+        {
+
+        }
+
         private void Update()
         {
             for (int i = 0; i < m_particles.Length; i++)

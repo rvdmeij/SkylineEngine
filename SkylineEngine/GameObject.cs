@@ -150,21 +150,17 @@ namespace SkylineEngine
         {
             Vector3 scale = new Vector3(scaleX, scaleY, scaleZ);
 
-            //string shaderPath = "res/Shaders/Default.shader";
-
-            Texture texture = Resources.LoadTexture(2, 2, null, "Default");
+            Texture texture = Resources.Load<Texture>("Default");
 
             GameObject g = new GameObject();
             g.AddComponent<MeshRenderer>();            
 
             var filter = g.AddComponent<MeshFilter>();
             var material = g.AddComponent<Material>();
-            //var shader = Resources.Load<Shader>(shaderPath);
 
             material.uvScale = new Vector2(1.0f, 1.0f);
             material.skyColor = new Color32(255, 255, 255, 255);
             material.diffuseColor = new Color32(255, 255, 255, 255);
-            //material.textures.Add(Resources.Load<Texture>("res/Textures/Default.png"));
             material.textures.Add(texture);
 
             switch (type)

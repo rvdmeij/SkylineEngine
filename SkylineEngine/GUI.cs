@@ -50,6 +50,20 @@ namespace SkylineEngine
             return text;
         }
 
+        public static void DrawTexture(Rect rect, int textureId)
+        {
+            BeginHideWindow(rect);
+            ImGui.Image(textureId, new ImVec2(rect.width, rect.height), new ImVec2(0,0), new ImVec2(1,1), new ImVec4(1,1,1,1), new ImVec4(0,0,0,0));
+            EndHideWindow();
+        }
+
+        public static void DrawTexture(Rect rect, int textureId, ImVec2 uv0, ImVec2 uv1)
+        {
+            BeginHideWindow(rect);
+            ImGui.Image(textureId, new ImVec2(rect.width, rect.height), uv0, uv1, new ImVec4(1,1,1,1), new ImVec4(0,0,0,0));
+            EndHideWindow();
+        }
+
         public static void DrawTexture(Rect rect, Texture texture)
         {
             BeginHideWindow(rect);
