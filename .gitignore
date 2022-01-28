@@ -3,5 +3,4 @@
 /.vs
 /.vscode
 /SkylineEngine/Terrain.cs
-/SkylineEngine/Water.cs
 /SkylineEngine/Clouds.cs
