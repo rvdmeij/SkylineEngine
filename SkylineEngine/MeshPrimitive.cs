@@ -527,7 +527,7 @@ namespace SkylineEngine
 
         public static Mesh CreateCylinder(Vector3 scale)
         {
-            const int DEFAULT_RADIAL_SEGMENTS = 8;
+            const int DEFAULT_RADIAL_SEGMENTS = 24;
             const int DEFAULT_HEIGHT_SEGMENTS = 2;
             const int MIN_RADIAL_SEGMENTS = 3;
             const int MIN_HEIGHT_SEGMENTS = 1;
@@ -535,8 +535,7 @@ namespace SkylineEngine
             const float DEFAULT_HEIGHT = 1.0f;
             
             int radialSegments = DEFAULT_RADIAL_SEGMENTS;
-            int heightSegments = DEFAULT_HEIGHT_SEGMENTS;
-            
+            int heightSegments = DEFAULT_HEIGHT_SEGMENTS;            
 
             int numVertexColumns, numVertexRows;
             float radius = DEFAULT_RADIUS;

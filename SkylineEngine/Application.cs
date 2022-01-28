@@ -35,6 +35,7 @@ namespace SkylineEngine
         {
             RenderPipeline.Initialize();
             PhysicsPipeline.Initialize();
+            Cursor.Initialize(this);
 
             GLInitGlew(true);
             imGuiControl = new ImGuiControl(mainWindow);
@@ -137,7 +138,6 @@ namespace SkylineEngine
         {
             imGuiControl.SetButtonUp(button);
             Input.SetMouseState((MouseButton)button, 1, 0, 0);
-            
         }
 
         private void OnMouseScroll(float x, float y)

@@ -69,7 +69,7 @@ namespace SkylineEngine
 
         public override void InitializeComponent()
         {
-
+            Initialize();
         }
 
         public void SetBounciness(float bounciness)
@@ -115,7 +115,7 @@ namespace SkylineEngine
             this.m_rigidBody = rb;
         }
 
-        public void Initialize()
+        internal void Initialize()
         {
             PhysicsPipeline.PushData(this);
         }

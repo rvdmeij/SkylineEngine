@@ -83,11 +83,11 @@ namespace SkylineEngine
 
             for (int i = 0; i < scene.Meshes.Count; i++)
             {
-                GameObject child = new GameObject("Child" + (i+1));
+                GameObject child = new GameObject(scene.Meshes[i].Name + (i+1));
                 child.transform.parent = parent.transform;
                 var filter = child.AddComponent<MeshFilter>();
                 var renderer = child.AddComponent<MeshRenderer>();
-                var material = child.AddComponent<Material>();
+                var material = child.AddComponent<Material>();                
 
                 material.shader = shader;
 
@@ -113,7 +113,12 @@ namespace SkylineEngine
                         texturePath = directory + "/textures/" + texturePath;
 
                         //Debug.Log(texturePath);
-                        material.textures.Add(Resources.Load<Texture>(texturePath));
+
+                        if(System.IO.File.Exists(texturePath))
+                            material.textures.Add(Resources.Load<Texture>(texturePath));
+                        else
+                            material.textures.Add(texture);
+                        
                     }
                     else
                     {

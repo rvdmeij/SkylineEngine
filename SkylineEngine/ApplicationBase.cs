@@ -45,6 +45,7 @@ namespace SkylineEngine
         private int versionMajor;
         private int versionMinor;
         private bool vsync;
+        private static ApplicationBase instance;
 
         public int Width
         {
@@ -69,6 +70,7 @@ namespace SkylineEngine
             this.versionMajor = versionMajor;
             this.versionMinor = versionMinor;
             this.vsync = vsync;
+            instance = this;
         }
 
         private bool Create()
@@ -268,6 +270,11 @@ namespace SkylineEngine
             SDL.SDL_GL_MakeCurrent(mainWindow, mainContext);
             close?.Invoke();
             Dispose();
+        }
+
+        public static void Quit()
+        {
+            instance.Close();
         }
 
         private void Dispose()

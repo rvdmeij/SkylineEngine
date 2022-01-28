@@ -76,6 +76,37 @@ namespace SkylineEngine
             }
         }
 
+        public Vector3 localPosition
+        {
+            get
+            {
+                if(parent != null)
+                {
+                    Vector3 pos = m_position - parent.position;
+                    return pos;
+                }
+                else
+                {
+                    return m_position;
+                }
+            }
+            set
+            {
+                if(parent != null)
+                {
+                    Vector3 pos = parent.position + value;
+                    m_position = value;
+                    SetTranslationMatrix();
+                }
+                else
+                {
+                    m_position = value;
+                    SetTranslationMatrix();
+                }
+                
+            }
+        }
+
         public Quaternion rotation
         {
             get { return m_rotation; }
@@ -93,14 +124,14 @@ namespace SkylineEngine
                 if(parent == null)
                     return m_rotation;
                 
-                var rot = m_rotation * Quaternion.Inverse(transform.parent.rotation);
+                var rot = m_rotation * Quaternion.Inverse(parent.rotation);
                 return rot;
             }
             set
             {
                 Quaternion rot = value;
                 if(parent != null)
-                    m_rotation = rot * Quaternion.Inverse(transform.parent.rotation);
+                    m_rotation = rot * Quaternion.Inverse(parent.rotation);
                 else
                     m_rotation = value;
                 SetRotationMatrix();

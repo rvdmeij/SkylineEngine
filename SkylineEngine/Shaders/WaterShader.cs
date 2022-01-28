@@ -44,6 +44,8 @@ void main()
 
 uniform sampler2D u_Texture0;
 uniform float u_Time;
+uniform vec4 u_DiffuseColor;
+uniform vec2 u_Resolution;
 
 in vec2 TexCoord0;
 
@@ -54,6 +56,8 @@ vec2 resolution = vec2(2, 2);
 
 void main() 
 {
+	resolution = u_Resolution;
+	
 	float time = u_Time * 0.5 + 23.0;
     vec2 uv = TexCoord0 * 50.0;
     
@@ -90,7 +94,7 @@ void main()
 	colour = mix(colour, vec3(1.0, 1.0, 0.0), (uv.x + uv.y) * first.x * first.y); // Yellow line
 	
 	#endif
-	gl_FragColor = vec4(colour, 0.2);
+	gl_FragColor = vec4(colour, 0.2) * u_DiffuseColor;
 }";
     }
 }

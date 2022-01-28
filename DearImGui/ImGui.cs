@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DearImGui
 {
-    public static class ImGui
+    public static unsafe class ImGui
     {
         //const string NATIVELIBNAME = "glsharp";
         const string NATIVELIBNAME = "imgui";
@@ -58,34 +58,55 @@ namespace DearImGui
         internal static extern bool ImGuiImageButton(int textureId, ref ImVec2 size, ref ImVec2 uv0, ref ImVec2 uv1, int frame_padding, ref ImVec4 bg_col, ref ImVec4 tint_col);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern bool ImGuiInputFloat(string label, ref float value, float step, float step_fast, string format, ImGuiInputTextFlags flags);
-
-        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
         internal static extern bool ImGuiSliderFloat(string label, ref float value, float v_min, float v_max, string format, float power);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe bool ImGuiInputFloat3(string label, float* value, int decimal_precision, ImGuiInputTextFlags flags);
+        internal static extern bool ImGuiInputFloat(string label, float* value, float step, float step_fast, string format, ImGuiInputTextFlags flags);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe bool ImGuiColorEdit3(string label, float* color, ImGuiColorEditFlags flags);
+        internal static extern bool ImGuiInputFloat2(string label, float* value, int decimal_precision, ImGuiInputTextFlags flags);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe bool ImGuiColorEdit4(string label, float* color, ImGuiColorEditFlags flags);
+        internal static extern bool ImGuiInputFloat3(string label, float* value, int decimal_precision, ImGuiInputTextFlags flags);
+
+        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool ImGuiInputFloat4(string label, float* value, int decimal_precision, ImGuiInputTextFlags flags);
+
+        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool ImGuiInputDouble(string label, double* value, double step, double step_fast, string format, ImGuiInputTextFlags flags);
+
+        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool ImGuiInputInt(string label, int* value, double step, double step_fast, string format, ImGuiInputTextFlags flags);
+
+        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool ImGuiInputInt2(string label, int* value, ImGuiInputTextFlags flags);
+
+        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool ImGuiInputInt3(string label, int* value, ImGuiInputTextFlags flags);
+
+        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool ImGuiInputInt4(string label, int* value, ImGuiInputTextFlags flags);
+
+        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool ImGuiColorEdit3(string label, float* color, ImGuiColorEditFlags flags);
+
+        [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern bool ImGuiColorEdit4(string label, float* color, ImGuiColorEditFlags flags);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void ImGuiImage(int textureId, ref ImVec2 size, ref ImVec2 uv0, ref ImVec2 uv1, ref ImVec4 tint_col, ref ImVec4 border_col);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe bool ImGuiInputText(string label, StringBuilder str, int bufferSize, ImGuiInputTextFlags flags, ImGuiInputTextCallback callback, void* user_data);
+        internal static extern bool ImGuiInputText(string label, StringBuilder str, int bufferSize, ImGuiInputTextFlags flags, ImGuiInputTextCallback callback, void* user_data);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe bool ImGuiInputTextMultiline(string label, char* str, int bufferSize, ref ImVec2 size, ImGuiInputTextFlags flags, ImGuiInputTextCallback callback, void* user_data);
+        internal static extern bool ImGuiInputTextMultiline(string label, char* str, int bufferSize, ref ImVec2 size, ImGuiInputTextFlags flags, ImGuiInputTextCallback callback, void* user_data);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe void ImGuiPlotLines(string label, float* values, int values_count, int values_offset);
+        internal static extern void ImGuiPlotLines(string label, float* values, int values_count, int values_offset);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern unsafe void ImGuiProgressBar(float progress, ref ImVec2 size_arg, char* overlay);
+        internal static extern void ImGuiProgressBar(float progress, ref ImVec2 size_arg, char* overlay);
 
         [DllImport(NATIVELIBNAME, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void ImGuiProgressBarWithoutLabel(float progress, ref ImVec2 size_arg);
@@ -296,17 +317,36 @@ namespace DearImGui
             return ImGuiImageButton(textureId, ref size, ref uv0, ref uv1, frame_padding, ref bg_col, ref tint_col);
         }
 
-        public static bool InputFloat(string label, ref float value, float step, float step_fast, string format, ImGuiInputTextFlags flags)
-        {
-            return ImGuiInputFloat(label, ref value, step, step_fast, format, flags);
-        }
-
         public static bool SliderFloat(string label, ref float value, float v_min, float v_max, string format, float power)
         {
             return ImGuiSliderFloat(label, ref value, v_min, v_max, format, power);
         }
 
-        public static unsafe bool InputFloat3(string label, float[] values, int decimal_precision, ImGuiInputTextFlags flags)
+        public static bool InputFloat(string label, ref float value, float step, float step_fast, string format, ImGuiInputTextFlags flags)
+        {
+            fixed(float* ptr = &value)
+            {
+                return ImGuiInputFloat(label, ptr, step, step_fast, format, flags);
+            }
+        }
+
+        public static bool InputFloat2(string label, float[] values, int decimal_precision, ImGuiInputTextFlags flags)
+        {
+            fixed(float* ptr = &values[0])
+            {
+                return ImGuiInputFloat2(label, ptr, decimal_precision, flags);
+            }
+        }
+
+        public static bool InputFloat2(string label, ref ImVec2 value, int decimal_precision, ImGuiInputTextFlags flags)
+        {
+            fixed(float* ptr = &value.x)
+            {
+                return ImGuiInputFloat2(label, ptr, decimal_precision, flags);
+            }
+        }
+
+        public static bool InputFloat3(string label, float[] values, int decimal_precision, ImGuiInputTextFlags flags)
         {
             fixed(float* ptr = &values[0])
             {
@@ -314,7 +354,71 @@ namespace DearImGui
             }
         }
 
-        public static unsafe bool ColorEdit3(string label, ref ImVec4 color, ImGuiColorEditFlags flags)
+        public static bool InputFloat3(string label, ref ImVec3 value, int decimal_precision, ImGuiInputTextFlags flags)
+        {
+            fixed(float* ptr = &value.x)
+            {
+                return ImGuiInputFloat3(label, ptr, decimal_precision, flags);
+            }
+        }
+
+        public static bool InputFloat4(string label, float[] values, int decimal_precision, ImGuiInputTextFlags flags)
+        {
+            fixed(float* ptr = &values[0])
+            {
+                return ImGuiInputFloat4(label, ptr, decimal_precision, flags);
+            }
+        }
+
+        public static bool InputFloat4(string label, ref ImVec4 value, int decimal_precision, ImGuiInputTextFlags flags)
+        {
+            fixed(float* ptr = &value.x)
+            {
+                return ImGuiInputFloat4(label, ptr, decimal_precision, flags);
+            }
+        }
+
+        public static bool Inputdouble(string label, ref double value, double step, double step_fast, string format, ImGuiInputTextFlags flags)
+        {
+            fixed(double* ptr = &value)
+            {
+                return ImGuiInputDouble(label, ptr, step, step_fast, format, flags);
+            }
+        }
+
+        public static bool InputInt(string label, ref int value, double step, double step_fast, string format, ImGuiInputTextFlags flags)
+        {
+            fixed(int* ptr = &value)
+            {
+                return ImGuiInputInt(label, ptr, step, step_fast, format, flags);
+            }
+        }
+
+        public static bool InputInt2(string label, int[] values, ImGuiInputTextFlags flags)
+        {
+            fixed(int* ptr = &values[0])
+            {
+                return ImGuiInputInt2(label, ptr, flags);
+            }
+        }
+
+        public static bool InputInt3(string label, int[] values, ImGuiInputTextFlags flags)
+        {
+            fixed(int* ptr = &values[0])
+            {
+                return ImGuiInputInt3(label, ptr, flags);
+            }
+        }
+
+        public static bool InputInt4(string label, int[] values, ImGuiInputTextFlags flags)
+        {
+            fixed(int* ptr = &values[0])
+            {
+                return ImGuiInputInt4(label, ptr, flags);
+            }
+        }
+
+        public static bool ColorEdit3(string label, ref ImVec4 color, ImGuiColorEditFlags flags)
         {
             fixed(float* ptr = &color.x)
             {
@@ -322,7 +426,7 @@ namespace DearImGui
             }
         }
 
-        public static unsafe bool ColorEdit4(string label, ref ImVec4 color, ImGuiColorEditFlags flags)
+        public static bool ColorEdit4(string label, ref ImVec4 color, ImGuiColorEditFlags flags)
         {
             fixed(float* ptr = &color.x)
             {
@@ -335,7 +439,7 @@ namespace DearImGui
             ImGuiImage(textureId, ref size, ref uv0, ref uv1, ref tint_col, ref border_col);
         }
 
-        public static unsafe bool InputText(string label, ref string str, int bufferSize, ImGuiInputTextFlags flags)
+        public static bool InputText(string label, ref string str, int bufferSize, ImGuiInputTextFlags flags)
         {
             StringBuilder sb = new StringBuilder(bufferSize);
             sb.Append(str);
@@ -346,7 +450,7 @@ namespace DearImGui
             return ret;
         }
 
-        public static unsafe bool InputTextMultiline(string label, string str, int bufferSize, ImVec2 size, ImGuiInputTextFlags flags, ImGuiInputTextCallback callback, void* user_data)
+        public static bool InputTextMultiline(string label, string str, int bufferSize, ImVec2 size, ImGuiInputTextFlags flags, ImGuiInputTextCallback callback, void* user_data)
         {
             fixed(char* ptr = str)
             {
@@ -354,7 +458,7 @@ namespace DearImGui
             }
         }
 
-        public static unsafe void PlotLines(string label, float[] values, int values_count, int values_offset)
+        public static void PlotLines(string label, float[] values, int values_count, int values_offset)
         {
             fixed(float* ptr = &values[0])
             {
@@ -362,7 +466,7 @@ namespace DearImGui
             }
         }
 
-        public static unsafe void ProgressBar(float fraction)
+        public static void ProgressBar(float fraction)
         {
             ImVec2 size = new ImVec2(-1, 0);
             ImGuiProgressBar(fraction, ref size, null);

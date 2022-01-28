@@ -123,20 +123,10 @@ namespace SkylineEngine
 
                 //RENDER
                 GL.DrawArrays(OpenTK.Graphics.OpenGL.PrimitiveType.Lines, 0, m_lines.Length);
-
-
                 GL.BindVertexArray(0);
-
-
                 GL.UseProgram(0);
-
-
                 GL.ActiveTexture(TextureUnit.Texture0);
-
-
                 GL.BindTexture(TextureTarget.Texture2D, 0);
-
-
                 GL.Disable(EnableCap.DepthTest);
             }
         }

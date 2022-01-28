@@ -78,6 +78,60 @@ namespace SkylineEngine
             EndHideWindow();
         }
 
+        public static bool ColorEdit3(Rect rect, ref ImVec4 color)
+        {
+            bool result = false;
+            BeginHideWindow(rect);
+            result = ImGui.ColorEdit3("", ref color, ImGuiColorEditFlags.None);
+            EndHideWindow();
+            return result;
+        }
+
+        public static bool ColorEdit4(Rect rect, ref ImVec4 color)
+        {
+            bool result = false;
+            BeginHideWindow(rect);
+            result = ImGui.ColorEdit4("", ref color, ImGuiColorEditFlags.None);
+            EndHideWindow();
+            return result;
+        }
+
+        public static bool InputFloat(Rect rect, ref float value, float step, float step_fast, string format)
+        {
+            bool result = false;
+            BeginHideWindow(rect);
+            result = ImGui.InputFloat("", ref value, step, step_fast, format, ImGuiInputTextFlags.None);
+            EndHideWindow();
+            return result;
+        }
+
+        public static bool InputFloat2(Rect rect, ref ImVec2 value, int decimal_precision)
+        {
+            bool result = false;
+            BeginHideWindow(rect);
+            result = ImGui.InputFloat2("", ref value, decimal_precision, ImGuiInputTextFlags.None);
+            EndHideWindow();
+            return result;
+        }
+
+        public static bool InputFloat3(Rect rect, ref ImVec3 value, int decimal_precision)
+        {
+            bool result = false;
+            BeginHideWindow(rect);
+            result = ImGui.InputFloat3("", ref value, decimal_precision, ImGuiInputTextFlags.None);
+            EndHideWindow();
+            return result;
+        }
+
+        public static bool InputFloat4(Rect rect, ref ImVec4 value, int decimal_precision)
+        {
+            bool result = false;
+            BeginHideWindow(rect);
+            result = ImGui.InputFloat4("", ref value, decimal_precision, ImGuiInputTextFlags.None);
+            EndHideWindow();
+            return result;
+        }
+
         private static uint GetId()
         {
             idCounter++;
