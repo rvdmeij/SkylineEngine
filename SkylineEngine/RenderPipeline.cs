@@ -37,6 +37,9 @@ namespace SkylineEngine
 
             waterFrameBuffer = new WaterFrameBuffer();
 
+            //Create a default texture which can be used for instantiating objects such as cubes/water/terrain etc.
+            Resources.LoadTexture(2, 2, null, "Default");
+
             Debug.Log("RenderPipeline initialized");
         }
 

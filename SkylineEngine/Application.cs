@@ -46,8 +46,7 @@ namespace SkylineEngine
                 Console.WriteLine("Failed to initialize ImGui");
             }
 
-            //Create default texture which is used in GameObject.CreatePrimitive
-            Resources.LoadTexture(2, 2, null, "Default");
+
 
             GL.Enable(EnableCap.DepthTest);
             SDL.SDL_GetWindowSize(mainWindow, out int width, out int height);

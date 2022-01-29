@@ -30,6 +30,8 @@ namespace SkylineEngine
         public float ambientStrength;
         public float time;
         public float strength;
+        public float opacity;
+        public Vector4 clippingPlane;
 
         private UniformInfo uniformIdentifier;
         private UniformInfo uniformAmbientColor;
@@ -55,6 +57,8 @@ namespace SkylineEngine
         private UniformInfo uniformMouse;
         private UniformInfo uniformScreenSize;
         private UniformInfo uniformCamPosition;
+        private UniformInfo uniformClippingPlane;
+        private UniformInfo uniformOpacity;
         private List<UniformInfo> uniformTextures = new List<UniformInfo>();
 
         public Material()
@@ -82,6 +86,7 @@ namespace SkylineEngine
 
             alphaBlend = false;
             wireframe = false;
+            opacity = 0.2f;
 
             mode = OpenTK.Graphics.OpenGL.PrimitiveType.Triangles;
         }
@@ -117,6 +122,8 @@ namespace SkylineEngine
             uniformScreenSize = shader.GetUniform("u_ScreenSize");
             uniformCamPosition = shader.GetUniform("u_CamPosition");
             uniformStrength = shader.GetUniform("u_Strength");
+            uniformClippingPlane = shader.GetUniform("u_clippingPlane");
+            uniformOpacity = shader.GetUniform("u_Opacity");
 
             if (textures == null)
                 return;
@@ -173,23 +180,20 @@ namespace SkylineEngine
                 shader.SetFloat2(uniformUVScale.location, uvScale);
             if (uniformTime != null)
                 shader.SetFloat(uniformTime.location, Time.time);
-
             if (uniformShowGrid != null)
                 shader.SetInt(uniformShowGrid.location, showGrid ? 1 : 0);
-
             if (uniformMouse != null)
                 shader.SetFloat2(uniformMouse.location, Input.GetMousePosition());
-
             if (uniformScreenSize != null)
                 shader.SetFloat2(uniformScreenSize.location, Screen.size);
-
             if (uniformCamPosition != null)
                 shader.SetFloat3(uniformCamPosition.location, cam.transform.position);
-
             if(uniformStrength != null)
                 shader.SetFloat(uniformStrength.location, strength);
-
-            shader.SetFloat4("u_clippingPlane", new Vector4(0, 1, 0, 15));
+            if(uniformClippingPlane != null)
+                shader.SetFloat4(uniformClippingPlane.location, clippingPlane);
+            if(uniformOpacity != null)
+                shader.SetFloat(uniformOpacity.location, opacity);
 
             if (uniformTextures != null)
             {

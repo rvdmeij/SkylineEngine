@@ -12,13 +12,14 @@ namespace SkylineEngine
         private Rigidbody m_rigidbody;
         private int m_width;
         private int m_depth;
+        private Vector2 m_size;
 
         public MeshFilter meshFilter { get { return m_meshFilter; } }
         public Material material { get { return m_material; } }
         public int width { get { return m_width; } }
         public int depth { get { return m_depth; } }
 
-        public Vector2i size
+        public Vector2i resolution
         {
             get
             {
@@ -28,6 +29,19 @@ namespace SkylineEngine
             {
                 m_width = value.x;
                 m_depth = value.y;
+                Reinitialize();
+            }
+        }
+
+        public Vector2 size
+        {
+            get
+            {
+                return m_size;
+            }
+            set
+            {
+                m_size = value;
                 Reinitialize();
             }
         }
@@ -157,6 +171,7 @@ namespace SkylineEngine
         {
             if (meshFilter == null && material == null)
             {
+                m_size = new Vector2(10, 10);
                 Create();
             }
         }
@@ -183,7 +198,7 @@ namespace SkylineEngine
             m_width = 200;
             m_depth = 200;
 
-            var mesh = MeshPrimitive.CreateTerrain((uint)m_width, (uint)m_depth, 0);
+            var mesh = MeshPrimitive.CreateTerrain((uint)m_width, (uint)m_depth, 0, m_size);
 
             m_meshFilter.mesh = mesh;
 
@@ -218,8 +233,11 @@ namespace SkylineEngine
 
         private void Reinitialize()
         {
-            m_meshFilter.mesh = MeshPrimitive.CreateTerrain((uint)m_width, (uint)m_depth, 0);
-            Update();
+            m_meshFilter.mesh = MeshPrimitive.CreateTerrain((uint)m_width, (uint)m_depth, 0, m_size);
+            //m_meshFilter.mesh.Update();
+            m_collider.mesh = m_meshFilter.mesh;
+            PhysicsPipeline.PopData(m_rigidbody);
+            PhysicsPipeline.PushData(m_rigidbody);
         }
     }
 }

@@ -21,11 +21,8 @@ namespace SkylineEngine
         private static SequentialImpulseConstraintSolver solver;
         private static DiscreteDynamicsWorld dynamicsWorld;
         private static BulletSharp.Math.Vector3 gravity;
-
-        private static List<Rigidbody> bodies;
-        private static List<RigidBody> rigidBodies;
-        private static List<CollisionShape> collisionShapes;
-
+        private static int fixedTimeStep = 50;
+        private static float timestep = 0.0f;
         private static List<RigidbodyInfo> rigidbodyInfo;
 
         public static void Initialize()
@@ -33,9 +30,6 @@ namespace SkylineEngine
             if (isInitialized)
                 return;
 
-            bodies = new List<Rigidbody>();
-            rigidBodies = new List<RigidBody>();
-            collisionShapes = new List<CollisionShape>();
             rigidbodyInfo = new List<RigidbodyInfo>();
 
             gravity = new BulletSharp.Math.Vector3(0, -9.81f, 0);
@@ -55,55 +49,8 @@ namespace SkylineEngine
 
         private static void WorldPreTickCallback(DynamicsWorld world, float timeStep)
         {
-            TestManifolds(world);
+            
         }
-
-        private static void TestManifolds(DynamicsWorld world)
-        {
-            int numManifolds = world.Dispatcher.NumManifolds;
-
-            //if (numManifolds == 1)
-            //{
-            //    PersistentManifold contactManifold = world.Dispatcher.GetManifoldByIndexInternal(0);
-            //    CollisionObject obA = contactManifold.Body0 as CollisionObject;
-            //    CollisionObject obB = contactManifold.Body1 as CollisionObject;
-            //    Rigidbody rbA = obA.UserObject as Rigidbody;
-            //    Rigidbody rbB = obB.UserObject as Rigidbody;
-
-            //    rbA.OnCollision(rbB);
-            //    rbB.OnCollision(rbA);
-            //}
-
-            for (int i = 0; i < numManifolds; i++)
-            {
-                PersistentManifold contactManifold = world.Dispatcher.GetManifoldByIndexInternal(i);
-                CollisionObject obA = contactManifold.Body0 as CollisionObject;
-                CollisionObject obB = contactManifold.Body1 as CollisionObject;
-
-
-
-                int numContacts = contactManifold.NumContacts;
-                for (int j = 0; j < numContacts; j++)
-                {
-                    ManifoldPoint pt = contactManifold.GetContactPoint(j);
-                    if (pt.Distance < 0.0f)
-                    {
-                        var ptA = pt.PositionWorldOnA;
-                        var ptB = pt.PositionWorldOnB;
-                        var normalOnB = pt.NormalWorldOnB;
-
-
-                    }
-
-                    Rigidbody rbA = obA.UserObject as Rigidbody;
-                    Rigidbody rbB = obB.UserObject as Rigidbody;
-                }
-            }
-
-        }
-
-        private static int fixedTimeStep = 50;
-        private static float timestep = 0.0f;
 
         public static void Update()
         {
@@ -118,8 +65,7 @@ namespace SkylineEngine
                 timestep = 0;
             }
 
-            dynamicsWorld.StepSimulation(Time.deltaTime, 7, (1.0f / fixedTimeStep));
-
+            dynamicsWorld.StepSimulation(Time.deltaTime, 1, (1.0f / fixedTimeStep));
 
             for (int j = 0; j < rigidbodyInfo.Count; j++)
             {
@@ -163,11 +109,8 @@ namespace SkylineEngine
 
             GameObject gameObject = rb.gameObject;
 
-
             RigidbodyInfo rbInfo = new RigidbodyInfo();
             rbInfo.body = rb;
-
-            //bodies.Add(rb);
 
             var components = gameObject.GetComponents();
 
@@ -216,9 +159,6 @@ namespace SkylineEngine
             rbInfo.rigidBody = rigidBody;
             rbInfo.collisionShape = collider.shape;
 
-            //rigidBodies.Add(rigidBody);
-            //collisionShapes.Add(collider.shape);
-
             dynamicsWorld.AddRigidBody(rigidBody);
 
             rigidBody.UserObject = rb;
@@ -232,6 +172,9 @@ namespace SkylineEngine
 
         public static void PopData(Rigidbody rb)
         {
+            if (rb == null)
+                return;
+
             dynamicsWorld.RemoveRigidBody(rb.rigidBody);
 
             int index = -1;
@@ -253,6 +196,7 @@ namespace SkylineEngine
             if(index >= 0)
             {
                 rigidbodyInfo.RemoveAt(index);
+                Debug.Log("Removed " + rb.gameObject.name + " from PhysicsPipeline with ID " + rb.InstanceId);
             }
         }
 
@@ -260,17 +204,6 @@ namespace SkylineEngine
         {
             if (!isInitialized)
                 return;
-            
-            // for (int i = 0; i < rigidBodies.Count; i++)
-            // {
-            //     dynamicsWorld.RemoveRigidBody(rigidBodies[i]);
-            //     rigidBodies[i].MotionState.Dispose();
-            //     rigidBodies[i].Dispose();
-            // }
-            // for (int i = 0; i < collisionShapes.Count; i++)
-            // {
-            //     collisionShapes[i].Dispose();
-            // }
 
             for(int i = 0; i < rigidbodyInfo.Count; i++)
             {

@@ -475,7 +475,7 @@ namespace SkylineEngine
             return mesh;
         }
 
-        public static Mesh CreateTerrain(uint width, uint height, int LOD)
+        public static Mesh CreateTerrain(uint width, uint height, int LOD, Vector2 size)
         {
             Mesh mesh = new Mesh();
 
@@ -521,7 +521,7 @@ namespace SkylineEngine
                 }
             }
 
-            SetScale(ref mesh, new Vector3(10, 1, 10));
+            SetScale(ref mesh, new Vector3(size.x, 1, size.y));
             mesh.RecalculateNormals();
             return mesh;
         }
