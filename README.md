@@ -102,9 +102,9 @@ namespace SkylineEngineApplication
 
         void LoadWater()
         {
-            water = new GameObject();
-            water.AddComponent<Water>();
-            water.transform.position += new Vector3(0, 2, 0);
+            waterObject = new GameObject();
+            waterObject.AddComponent<Water>();
+            waterObject.transform.position += new Vector3(0, 2, 0);
         }
 
         //Only call ImGui/GUI functions from void OnGUI
