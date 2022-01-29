@@ -59,7 +59,6 @@ namespace SkylineEngine
             m_material.shader = shader;
             m_material.alphaBlend = true;
 
-            //m_material.textures.Add(Resources.Load<Texture>("res/Textures/Water6.png"));
             m_material.textures.Add(Resources.Load<Texture>("Default"));
 
             m_width = 200;

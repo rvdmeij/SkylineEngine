@@ -40,8 +40,23 @@ namespace SkylineEngineApplication
     {
         private Camera camera;
         private GameObject cube;
+        private GameObject terrainObject;
+        private GameObject waterObject;
+        private Terrain terrain;
 
         void Start()
+        {
+            SetupCamera();
+            SetupLight();
+            LoadSkybox();
+            LoadTerrain();
+            LoadWater();
+
+            cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.zero;
+        }
+
+        void SetupCamera()
         {
             camera = Camera.main;            
             camera.farClipPlane = 10000.0f;
@@ -50,18 +65,16 @@ namespace SkylineEngineApplication
             var firstPerson = camera.gameObject.AddComponent<FirstPersonController>();
             firstPerson.speed *= 5;
             firstPerson.zoomSpeed *= 2;
+        }
 
+        void SetupLight()
+        {
             Light.main.strength = 1.0f;
             Light.main.transform.position = new Vector3(0, 1000, -500);
             Light.main.transform.rotation = new Quaternion(-0.26127627f,-0.00029115385f,0.26208368f,-0.9291085f);
-
-            cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = Vector3.zero;
-
-            LoadSkybox();
         }
 
-        //These textures are not included in this project
+        //Textures are not included in this project
         void LoadSkybox()
         {
             string left = "res/Textures/Skyboxes/Sahara/left.tga";
@@ -73,6 +86,25 @@ namespace SkylineEngineApplication
 
             SkyboxFaces faces = new SkyboxFaces(left, right, top, bottom, front, back);
             RenderPipeline.LoadSkybox(faces);
+        }
+
+        //Textures are not included in this project
+        void LoadTerrain()
+        {
+            terrainObject = new GameObject();
+            terrain = terrainObject.AddComponent<Terrain>();
+            terrain.splatMap = Resources.Load<Texture>("res/Textures/SplatMap.jpg");
+            terrain.texture1 = Resources.Load<Texture>("res/Textures/Grass1.jpg");
+            terrain.texture2 = Resources.Load<Texture>("res/Textures/Grass2.jpg");
+            terrain.texture3 = Resources.Load<Texture>("res/Textures/Dirt.jpg");
+            terrain.texture4 = Resources.Load<Texture>("res/Textures/GrassFlowers.jpg");
+        }
+
+        void LoadWater()
+        {
+            water = new GameObject();
+            water.AddComponent<Water>();
+            water.transform.position += new Vector3(0, 2, 0);
         }
 
         //Only call ImGui/GUI functions from void OnGUI
