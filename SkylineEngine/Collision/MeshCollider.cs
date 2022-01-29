@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using BulletSharp;
 using System.IO;
 
@@ -18,8 +17,8 @@ namespace SkylineEngine.Collision
             { 
                 m_mesh = value;
                 if(m_mesh != null)
-                {
-                    CreateMeshData(m_mesh);
+                {                    
+                    Initialize();
                 }
             }
 

@@ -61,6 +61,11 @@ namespace SkylineEngine
             return (float)System.Math.Floor(x);
         }
 
+        public static int FloorToInt(float x)
+        {
+            return (int)System.Math.Floor(x);
+        }
+
         public static float Lerp(float a, float b, float t)
         {
             t = Clamp(t, 0.0f, 1.0f);

@@ -7,6 +7,13 @@ namespace SkylineEngine
 {
     internal static class PhysicsPipeline
     {
+        class RigidbodyInfo
+        {
+            public Rigidbody body;
+            public RigidBody rigidBody;
+            public CollisionShape collisionShape;
+        }
+
         private static bool isInitialized = false;
         private static DbvtBroadphase broadphase;
         private static DefaultCollisionConfiguration collisionConfiguration;
@@ -19,6 +26,8 @@ namespace SkylineEngine
         private static List<RigidBody> rigidBodies;
         private static List<CollisionShape> collisionShapes;
 
+        private static List<RigidbodyInfo> rigidbodyInfo;
+
         public static void Initialize()
         {
             if (isInitialized)
@@ -27,6 +36,7 @@ namespace SkylineEngine
             bodies = new List<Rigidbody>();
             rigidBodies = new List<RigidBody>();
             collisionShapes = new List<CollisionShape>();
+            rigidbodyInfo = new List<RigidbodyInfo>();
 
             gravity = new BulletSharp.Math.Vector3(0, -9.81f, 0);
 
@@ -111,7 +121,7 @@ namespace SkylineEngine
             dynamicsWorld.StepSimulation(Time.deltaTime, 7, (1.0f / fixedTimeStep));
 
 
-            for (int j = 0; j < rigidBodies.Count; j++)
+            for (int j = 0; j < rigidbodyInfo.Count; j++)
             {
                 CollisionObject obj = dynamicsWorld.CollisionObjectArray[j];
                 RigidBody body = RigidBody.Upcast(obj);
@@ -153,7 +163,11 @@ namespace SkylineEngine
 
             GameObject gameObject = rb.gameObject;
 
-            bodies.Add(rb);
+
+            RigidbodyInfo rbInfo = new RigidbodyInfo();
+            rbInfo.body = rb;
+
+            //bodies.Add(rb);
 
             var components = gameObject.GetComponents();
 
@@ -199,8 +213,11 @@ namespace SkylineEngine
 
             RigidBody rigidBody = new RigidBody(rigidBodyCI);
 
-            rigidBodies.Add(rigidBody);
-            collisionShapes.Add(collider.shape);
+            rbInfo.rigidBody = rigidBody;
+            rbInfo.collisionShape = collider.shape;
+
+            //rigidBodies.Add(rigidBody);
+            //collisionShapes.Add(collider.shape);
 
             dynamicsWorld.AddRigidBody(rigidBody);
 
@@ -208,7 +225,35 @@ namespace SkylineEngine
 
             rb.SetRigidBody(rigidBody);
 
+            rigidbodyInfo.Add(rbInfo);
+
             Debug.Log("Added " + gameObject.name + " to PhysicsPipeline with ID " + rb.InstanceId);
+        }
+
+        public static void PopData(Rigidbody rb)
+        {
+            dynamicsWorld.RemoveRigidBody(rb.rigidBody);
+
+            int index = -1;
+
+            for(int i = 0; i < rigidbodyInfo.Count; i++)
+            {
+                long instanceId = rigidbodyInfo[i].body.InstanceId;
+
+                if(instanceId == rb.InstanceId)
+                {
+                    rigidbodyInfo[i].rigidBody.MotionState.Dispose();
+                    rigidbodyInfo[i].rigidBody.Dispose();
+                    rigidbodyInfo[i].collisionShape.Dispose();
+                    index = i;
+                    break;
+                }
+            }
+
+            if(index >= 0)
+            {
+                rigidbodyInfo.RemoveAt(index);
+            }
         }
 
         public static void Dispose()
@@ -216,15 +261,23 @@ namespace SkylineEngine
             if (!isInitialized)
                 return;
             
-            for (int i = 0; i < rigidBodies.Count; i++)
+            // for (int i = 0; i < rigidBodies.Count; i++)
+            // {
+            //     dynamicsWorld.RemoveRigidBody(rigidBodies[i]);
+            //     rigidBodies[i].MotionState.Dispose();
+            //     rigidBodies[i].Dispose();
+            // }
+            // for (int i = 0; i < collisionShapes.Count; i++)
+            // {
+            //     collisionShapes[i].Dispose();
+            // }
+
+            for(int i = 0; i < rigidbodyInfo.Count; i++)
             {
-                dynamicsWorld.RemoveRigidBody(rigidBodies[i]);
-                rigidBodies[i].MotionState.Dispose();
-                rigidBodies[i].Dispose();
-            }
-            for (int i = 0; i < collisionShapes.Count; i++)
-            {
-                collisionShapes[i].Dispose();
+                dynamicsWorld.RemoveRigidBody(rigidbodyInfo[i].rigidBody);
+                rigidbodyInfo[i].rigidBody.MotionState.Dispose();
+                rigidbodyInfo[i].rigidBody.Dispose();
+                rigidbodyInfo[i].collisionShape.Dispose();
             }
 
             isInitialized = false;

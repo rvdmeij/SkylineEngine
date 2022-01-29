@@ -16,6 +16,14 @@ namespace SkylineEngine
         private Vector3 m_velocity = Vector3.zero;
         private RigidBody m_rigidBody;
 
+        public RigidBody rigidBody
+        {
+            get
+            {
+                return m_rigidBody;
+            }
+        }
+
         public float mass
         {
             get

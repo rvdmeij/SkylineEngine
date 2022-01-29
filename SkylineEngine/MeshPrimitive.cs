@@ -489,7 +489,8 @@ namespace SkylineEngine
             float topLeftZ = 0;
             //  unsigned int numVertices = width * height;
             //  unsigned int numIndices = (width-1) * (height-1) * 6;
-            uint numVertices = verticesPerLine * verticesPerLine;
+            //uint numVertices = verticesPerLine * verticesPerLine;
+            uint numVertices = verticesPerLine * height;
             uint numIndices = (verticesPerLine - 1) * (verticesPerLine - 1) * 6;
             uint vertexIndex = 0;
             int triangleIndex = 0;
