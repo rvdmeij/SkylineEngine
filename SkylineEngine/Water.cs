@@ -124,7 +124,7 @@ namespace SkylineEngine
 
         private void Reinitialize()
         {
-            m_meshFilter.mesh = MeshPrimitive.CreateTerrain((uint)m_width, (uint)m_depth, 0, m_size);            
+            m_meshFilter.mesh = MeshPrimitive.CreateTerrain((uint)m_width, (uint)m_depth, 0, m_size);
         }
     }
 }

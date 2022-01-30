@@ -95,7 +95,7 @@ namespace SkylineEngine
                 if(parent != null)
                 {
                     Vector3 pos = parent.position + value;
-                    m_position = value;
+                    m_position = pos;
                     SetTranslationMatrix();
                 }
                 else

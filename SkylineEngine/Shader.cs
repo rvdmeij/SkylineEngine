@@ -44,6 +44,11 @@ namespace SkylineEngine
         private int[] m_shaders = new int[2];
         private Dictionary<string, UniformInfo> uniforms = new Dictionary<string, UniformInfo>();
 
+        public Dictionary<string,UniformInfo> Uniforms
+        {
+            get{ return uniforms; }
+        }
+
         public int program { get { return m_program; } }
 
         public Shader(string vertexSource, string fragmentSource)
@@ -309,6 +314,11 @@ namespace SkylineEngine
             GL.Uniform2(GL.GetUniformLocation(m_program, name), value.x, value.y);
         }
 
+        public void SetFloat2(string name, float x, float y)
+        {
+            GL.Uniform2(GL.GetUniformLocation(m_program, name), x, y);
+        }
+
         public void SetFloat3(string name, float[] value)
         {
             GL.Uniform3(GL.GetUniformLocation(m_program, name), value.Length, value);
@@ -319,6 +329,11 @@ namespace SkylineEngine
             GL.Uniform3(GL.GetUniformLocation(m_program, name), value.x, value.y, value.z);
         }
 
+        public void SetFloat3(string name, float x, float y, float z)
+        {
+            GL.Uniform3(GL.GetUniformLocation(m_program, name), x, y, z);
+        }
+
         public void SetFloat4(string name, float[] value)
         {
             GL.Uniform4(GL.GetUniformLocation(m_program, name), value.Length, value);
@@ -327,6 +342,11 @@ namespace SkylineEngine
         public void SetFloat4(string name, Color32 value)
         {
             GL.Uniform4(GL.GetUniformLocation(m_program, name), value.r, value.g, value.b, value.a);
+        }
+
+        public void SetFloat4(string name, float x, float y, float z, float w)
+        {
+            GL.Uniform4(GL.GetUniformLocation(m_program, name), x, y, z, w);
         }
 
         public void SetFloat4(string name, Vector4 value)

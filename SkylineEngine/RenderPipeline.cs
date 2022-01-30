@@ -7,6 +7,18 @@ namespace SkylineEngine
 {
     public static class RenderPipeline
     {
+        public class FogSettings
+        {
+            public float density = 0.0000002f;
+            public float gradient = 1.5f;
+        }
+
+        public class SkyboxSettings
+        {
+            public Color32 diffuseColor = new Color32(255, 255, 255, 255);
+            public Color32 skyColor = new Color32(166, 166, 137, 255);
+        }
+
         private static List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
         private static List<LineRenderer> lineRenderers = new List<LineRenderer>();
         private static List<ParticleSystem> particleRenderers = new List<ParticleSystem>();
@@ -16,6 +28,9 @@ namespace SkylineEngine
         private static Skybox skybox;
         private static Shader skyboxShader;
         private static WaterFrameBuffer waterFrameBuffer;
+
+        public static FogSettings fogSettings = new FogSettings();
+        public static SkyboxSettings skyboxSettings = new SkyboxSettings();
 
         public static int FrameBufferReflectionTexture
         {
@@ -214,12 +229,6 @@ namespace SkylineEngine
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);            
 
-            Color32 c = new Color32(255, 255, 255, 255);
-            Vector3 color = new Vector3(c.r, c.g, c.b);
-            
-            Color32 s = new Color32(166, 166, 137, 255);
-            Vector3 skyColor = new Vector3(s.r, s.g, s.b);
-
             var projection = Camera.main.GetPerspectiveProjectionMatrix();
             var model = OpenTK.Mathematics.Matrix4.Identity;
             var view = new OpenTK.Mathematics.Matrix4(new OpenTK.Mathematics.Matrix3(Camera.main.GetViewMatrix()));
@@ -229,10 +238,10 @@ namespace SkylineEngine
             skyboxShader.SetMat4("u_Model", model);
             skyboxShader.SetMat4("u_View", view);
             skyboxShader.SetMat4("u_Projection", projection);
-            skyboxShader.SetFloat3("u_CamPosition", Camera.main.transform.position);
-            skyboxShader.SetFloat3("u_DiffuseColor", color);
             skyboxShader.SetFloat("u_Time", Time.time);
-            skyboxShader.SetFloat3("u_SkyColor", skyColor);
+            skyboxShader.SetFloat3("u_CamPosition", Camera.main.transform.position);
+            skyboxShader.SetFloat3("u_DiffuseColor", RenderPipeline.skyboxSettings.diffuseColor.r, RenderPipeline.skyboxSettings.diffuseColor.g, RenderPipeline.skyboxSettings.diffuseColor.b);
+            skyboxShader.SetFloat3("u_SkyColor", RenderPipeline.skyboxSettings.skyColor.r, RenderPipeline.skyboxSettings.skyColor.g, RenderPipeline.skyboxSettings.skyColor.b);
             skybox.Draw();
         }
     }

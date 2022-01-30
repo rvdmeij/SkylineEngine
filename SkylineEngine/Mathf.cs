@@ -43,6 +43,15 @@ namespace SkylineEngine
             return value;
         }
 
+        public static int Clamp(int value, int min, int max)
+        {
+            if (value > max)
+                value = max;
+            if (value < min)
+                value = min;
+            return value;
+        }
+
         /// <summary>
         ///   <para>Clamps value between 0 and 1 and returns value.</para>
         /// </summary>

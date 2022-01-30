@@ -26,8 +26,8 @@ uniform vec3 u_LightPosition;
 uniform vec2 u_UVScale;
 uniform vec4 u_clippingPlane;
 
-float fogDensity = 0.0000002;
-float fogGradient = 1.5;
+uniform float u_FogDensity;
+uniform float u_FogGradient;
 
 
 void main()
@@ -46,7 +46,7 @@ void main()
     TexCoord0 = uv * u_UVScale;
 
     float distance = length(positionRelativeToCam.xyz);
-    Visibility = exp(-pow((distance*fogDensity), fogGradient));
+    Visibility = exp(-pow((distance*u_FogDensity), u_FogGradient));
     Visibility = clamp(Visibility, 0.0, 1.0);
 }";
 
@@ -70,8 +70,6 @@ uniform sampler2D u_Texture0;
 out vec4 outColor;
 
 vec4 light_color = vec4( 1.0,  1.0,  1.0, 1.0);
-
-float showGrid = 1.0f;
 
 void main()
 {

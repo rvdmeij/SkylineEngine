@@ -3,6 +3,204 @@ using OpenTK.Mathematics;
 
 namespace SkylineEngine
 {
+    public sealed class Material2 : Component
+    {
+        public class Uniform<T>
+        {
+            public string name;
+            public int location;
+            public T value;
+
+            public Uniform(string name, int location)
+            {
+                this.name = name;
+                this.location = location;
+            }
+        }
+
+        public Shader shader;
+        
+        private Dictionary<string,Uniform<int>> uniformInt = new Dictionary<string, Uniform<int>>();
+        private Dictionary<string,Uniform<int>> uniformSampler2D = new Dictionary<string, Uniform<int>>();
+        private Dictionary<string,Uniform<int>> uniformSamplerCube = new Dictionary<string, Uniform<int>>();
+        private Dictionary<string,Uniform<Matrix3>> uniformMat3 = new Dictionary<string, Uniform<Matrix3>>();
+        private Dictionary<string,Uniform<Matrix4>> uniformMat4 = new Dictionary<string, Uniform<Matrix4>>();
+        private Dictionary<string,Uniform<float>> uniformFloat = new Dictionary<string, Uniform<float>>();
+        private Dictionary<string,Uniform<Vector2>> uniformFloat2 = new Dictionary<string, Uniform<Vector2>>();
+        private Dictionary<string,Uniform<Vector3>> uniformFloat3 = new Dictionary<string, Uniform<Vector3>>();
+        private Dictionary<string,Uniform<Vector4>> uniformFloat4 = new Dictionary<string, Uniform<Vector4>>();
+
+        public void Initialize()
+        {
+            foreach(UniformInfo u in shader.Uniforms.Values)
+            {
+                switch(u.type)
+                {
+                    case UniformType.BOOL:
+                    case UniformType.INT:
+                        uniformInt.Add(u.name, new Uniform<int>(u.name, u.location));
+                        break;
+                    case UniformType.SAMPLER2D:
+                        uniformSampler2D.Add(u.name, new Uniform<int>(u.name, u.location));
+                        break;
+                    case UniformType.SAMPLERCUBE:
+                        uniformSamplerCube.Add(u.name, new Uniform<int>(u.name, u.location));
+                        break;
+                    case UniformType.FLOAT:
+                        uniformFloat.Add(u.name, new Uniform<float>(u.name, u.location));
+                        break;
+                    case UniformType.MAT3:
+                        uniformMat3.Add(u.name, new Uniform<Matrix3>(u.name, u.location));
+                        break;
+                    case UniformType.MAT4:
+                        uniformMat4.Add(u.name, new Uniform<Matrix4>(u.name, u.location));
+                        break;
+                    case UniformType.VEC2:
+                        uniformFloat2.Add(u.name, new Uniform<Vector2>(u.name, u.location));
+                        break;
+                    case UniformType.VEC3:
+                        uniformFloat3.Add(u.name, new Uniform<Vector3>(u.name, u.location));
+                        break;
+                    case UniformType.VEC4:
+                        uniformFloat4.Add(u.name, new Uniform<Vector4>(u.name, u.location));
+                        break;
+                }
+            }
+        }
+
+        public void UpdateUniforms()
+        {
+            foreach(var u in uniformInt.Values)
+            {
+                shader.SetInt(u.location, u.value);
+            }
+
+            foreach(var u in uniformFloat.Values)
+            {
+                shader.SetFloat(u.location, u.value);
+            }
+
+            int unit = 0;
+            foreach(var u in uniformSampler2D.Values)
+            {
+                shader.SetInt(u.location, unit);
+                unit++;
+            }
+
+            unit = 0;
+            foreach(var u in uniformSamplerCube.Values)
+            {
+                shader.SetInt(u.location, unit);
+                unit++;
+            }
+
+            foreach(var u in uniformMat3.Values)
+            {
+                shader.SetMat3(u.location, u.value);
+            }
+
+            foreach(var u in uniformMat4.Values)
+            {
+                shader.SetMat4(u.location, u.value);
+            }
+            
+            foreach(var u in uniformFloat2.Values)
+            {
+                shader.SetFloat2(u.location, u.value);
+            }
+
+            foreach(var u in uniformFloat3.Values)
+            {
+                shader.SetFloat3(u.location, u.value);
+            }
+
+            foreach(var u in uniformFloat4.Values)
+            {
+                shader.SetFloat4(u.location, u.value);
+            }
+        }
+
+        public void SetInt(string name, int value)
+        {
+            if(uniformInt.ContainsKey(name))
+            {
+                uniformInt[name].value = value;
+            }
+        }
+
+        public void SetBool(string name, bool value)
+        {
+            if(uniformInt.ContainsKey(name))
+            {
+                uniformInt[name].value = value == true ? 1 : 0;
+            }
+        }
+
+        public void SetSampler2D(string name, int value)
+        {
+            if(uniformSampler2D.ContainsKey(name))
+            {
+                uniformSampler2D[name].value = value;
+            }
+        }
+
+        public void SetSamplerCube(string name, int value)
+        {
+            if(uniformSamplerCube.ContainsKey(name))
+            {
+                uniformSamplerCube[name].value = value;
+            }
+        }
+
+        public void SetFloat(string name, float value)
+        {
+            if(uniformFloat.ContainsKey(name))
+            {
+                uniformFloat[name].value = value;
+            }
+        }
+
+        public void SetFloat2(string name, Vector2 value)
+        {
+            if(uniformFloat2.ContainsKey(name))
+            {
+                uniformFloat2[name].value = value;
+            }
+        }
+
+        public void SetFloat3(string name, Vector3 value)
+        {
+            if(uniformFloat3.ContainsKey(name))
+            {
+                uniformFloat3[name].value = value;
+            }
+        }
+
+        public void SetFloat4(string name, Vector4 value)
+        {
+            if(uniformFloat4.ContainsKey(name))
+            {
+                uniformFloat4[name].value = value;
+            }
+        }
+
+        public void SetMat3(string name, Matrix3 value)
+        {
+            if(uniformMat3.ContainsKey(name))
+            {
+                uniformMat3[name].value = value;
+            }
+        }
+
+        public void SetMat4(string name, Matrix4 value)
+        {
+            if(uniformMat4.ContainsKey(name))
+            {
+                uniformMat4[name].value = value;
+            }
+        }
+    }
+
     public sealed class Material : Component
     {
         public Shader shader;
@@ -11,8 +209,8 @@ namespace SkylineEngine
         public Matrix4 view;
         public Matrix4 projection;
         public bool alphaBlend;
-        public bool wireframe;
         public bool showGrid;
+        public Vector2 gridUV;
         public int identifier;
         public OpenTK.Graphics.OpenGL.PrimitiveType mode;
         public Color32 ambientColor;
@@ -54,11 +252,14 @@ namespace SkylineEngine
         private UniformInfo uniformStrength;
         private UniformInfo uniformIsSelected;
         private UniformInfo uniformShowGrid;
+        private UniformInfo uniformGridUV;
         private UniformInfo uniformMouse;
         private UniformInfo uniformScreenSize;
         private UniformInfo uniformCamPosition;
         private UniformInfo uniformClippingPlane;
         private UniformInfo uniformOpacity;
+        private UniformInfo uniformFogDensity;
+        private UniformInfo uniformFogGradient;
         private List<UniformInfo> uniformTextures = new List<UniformInfo>();
 
         public Material()
@@ -85,15 +286,9 @@ namespace SkylineEngine
             strength = 1.0f;
 
             alphaBlend = false;
-            wireframe = false;
             opacity = 0.2f;
 
             mode = OpenTK.Graphics.OpenGL.PrimitiveType.Triangles;
-        }
-
-        ~Material()
-        {
-
         }
 
         public void Initialize()
@@ -118,12 +313,15 @@ namespace SkylineEngine
             uniformTime = shader.GetUniform("u_Time");
             uniformIsSelected = shader.GetUniform("u_IsSelected");
             uniformShowGrid = shader.GetUniform("u_ShowGrid");
+            uniformGridUV = shader.GetUniform("u_GridUV");
             uniformMouse = shader.GetUniform("u_Mouse");
             uniformScreenSize = shader.GetUniform("u_ScreenSize");
             uniformCamPosition = shader.GetUniform("u_CamPosition");
             uniformStrength = shader.GetUniform("u_Strength");
             uniformClippingPlane = shader.GetUniform("u_clippingPlane");
             uniformOpacity = shader.GetUniform("u_Opacity");
+            uniformFogDensity = shader.GetUniform("u_FogDensity");
+            uniformFogGradient = shader.GetUniform("u_FogGradient");
 
             if (textures == null)
                 return;
@@ -182,6 +380,8 @@ namespace SkylineEngine
                 shader.SetFloat(uniformTime.location, Time.time);
             if (uniformShowGrid != null)
                 shader.SetInt(uniformShowGrid.location, showGrid ? 1 : 0);
+            if(uniformGridUV!= null)
+                shader.SetFloat2(uniformGridUV.location, gridUV);
             if (uniformMouse != null)
                 shader.SetFloat2(uniformMouse.location, Input.GetMousePosition());
             if (uniformScreenSize != null)
@@ -194,6 +394,10 @@ namespace SkylineEngine
                 shader.SetFloat4(uniformClippingPlane.location, clippingPlane);
             if(uniformOpacity != null)
                 shader.SetFloat(uniformOpacity.location, opacity);
+            if(uniformFogDensity != null)
+                shader.SetFloat(uniformFogDensity.location, RenderPipeline.fogSettings.density);
+            if(uniformFogGradient != null)
+                shader.SetFloat(uniformFogGradient.location, RenderPipeline.fogSettings.gradient);
 
             if (uniformTextures != null)
             {

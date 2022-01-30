@@ -166,6 +166,29 @@ namespace SkylineEngine
             }
         }
 
+        public bool showGrid
+        {
+            get
+            {
+                return material.showGrid;
+            }
+            set
+            {
+                material.showGrid = value;
+            }
+        }
+
+        public Vector2 gridUV
+        {
+            get
+            {
+                return material.gridUV;
+            }
+            set
+            {
+                material.gridUV = value;
+            }
+        }
 
         public override void InitializeComponent()
         {
@@ -234,7 +257,6 @@ namespace SkylineEngine
         private void Reinitialize()
         {
             m_meshFilter.mesh = MeshPrimitive.CreateTerrain((uint)m_width, (uint)m_depth, 0, m_size);
-            //m_meshFilter.mesh.Update();
             m_collider.mesh = m_meshFilter.mesh;
             PhysicsPipeline.PopData(m_rigidbody);
             PhysicsPipeline.PushData(m_rigidbody);

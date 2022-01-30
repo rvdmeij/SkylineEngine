@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
+using SkylineEngine.Shaders;
 
 namespace SkylineEngine
 {
@@ -21,22 +22,15 @@ namespace SkylineEngine
     public sealed class LineRenderer : Renderer
     {
         public LineVertex[] m_lines = null;
-        private List<Material> m_materials;
+        private List<Material> m_materials = new List<Material>();
 
-        private uint VAO;
-        private uint VBO;
-
-        public LineRenderer()
-        {
-            VAO = 0;
-            VBO = 0;
-            m_materials = new List<Material>();
-        }
+        private uint VAO = 0;
+        private uint VBO = 0;
 
         public override void InitializeComponent()
         {
             var material = gameObject.AddComponent<Material>();
-            material.shader = Resources.Load<Shader>("res/Shaders/Line.shader");
+            material.shader = Resources.LoadShader(LineShader.vertex, LineShader.fragment, "Lines");
         }
 
         public void AddLines(List<LineVertex> lines)

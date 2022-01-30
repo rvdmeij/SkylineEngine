@@ -122,7 +122,7 @@ namespace SkylineEngine
                     }
                 }
 
-                if (m_materials[i].wireframe)
+                if (wireFrame)
                 {
                     GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
                 }
@@ -161,13 +161,9 @@ namespace SkylineEngine
                 }
 
                 GL.BindVertexArray(0);
-
                 GL.UseProgram(0);
-
                 GL.ActiveTexture(TextureUnit.Texture0);
-
                 GL.BindTexture(TextureTarget.Texture2D, 0);
-
                 GL.Disable(EnableCap.DepthTest);
             }
         }

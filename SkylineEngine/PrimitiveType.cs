@@ -3,12 +3,13 @@
     public enum PrimitiveType
     {
         Capsule = 0,
-        Cube = 1,
-        Cylinder = 2,
-        Plane = 3,
-        Sphere = 4,
-        Quad = 5,
-        Plane2D = 6,
-        Billboard
+        Circle = 2,
+        Cube = 3,
+        Cylinder = 4,
+        Plane = 5,
+        Sphere = 6,
+        Quad = 7,
+        Plane2D = 8,
+        Billboard = 9
     }
 }

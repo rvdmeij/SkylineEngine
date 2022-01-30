@@ -19,6 +19,7 @@ namespace SkylineEngine
         private int channels = 2;
         private int sampleRate;
         private short[] audioBuffer;
+        private float[] audioBufferCopy;
         private ushort bufferSize;
         private long playbackTime;
         private bool loop;
@@ -56,6 +57,20 @@ namespace SkylineEngine
             }
         }
 
+        public int Channels
+        {
+            get
+            {
+                return channels;
+            }
+            // set
+            // {
+            //     value = Mathf.Clamp(value, 1, 2);
+            //     channels = value;
+            //     Reinitialize();
+            // }
+        }
+
         private static int audioSourceCount = 0;
 
         public AudioSource()
@@ -64,11 +79,11 @@ namespace SkylineEngine
             this.sampleRate = AudioSettings.outputSampleRate;
             this.bufferSize = (ushort)AudioSettings.outputBufferSize;
             this.audioBuffer = new short[bufferSize];
+            this.audioBufferCopy = new float[bufferSize];
+            this.volume = 1.0f;
             this.wavefileReader = new WaveFileReader();
             this.wavefileReader.onRead += WavefileReader_OnRead;
             this.wavefileReader.onReadFinished += WavefileReader_OnReadFinished;
-            this.volume = 1.0f;
-
             Initialize();
         }
 
@@ -95,6 +110,27 @@ namespace SkylineEngine
             Console.WriteLine("Audio status: " + status);
 
             audioSourceCount++;
+        }
+
+        private void Reinitialize()
+        {
+            Stop();
+            SDL.SDL_CloseAudio();
+            Debug.Log("Audio status: " + status);
+
+            IntPtr userdata = GCHandle.ToIntPtr(hInstance);
+
+            SDL.SDL_AudioCallback callback = new SDL.SDL_AudioCallback(OnAudioRead);
+            specDesired.freq = sampleRate;
+            specDesired.channels = Convert.ToByte(channels); //channels is stored as bytes
+            specDesired.samples = bufferSize;
+            specDesired.userdata = userdata;
+            specDesired.format = SDL.AUDIO_S16;
+            specDesired.callback = callback;
+
+            device = SDL.SDL_InitSubSystem(SDL.SDL_INIT_AUDIO);
+            status = SDL.SDL_OpenAudio(ref specDesired, out specObtained);
+            Console.WriteLine("Audio status: " + status);
         }
 
         public void Play()
@@ -134,6 +170,17 @@ namespace SkylineEngine
             }
         }
 
+        public void GetOutputData(float[] data)
+        {
+            if(!IsPlaying)
+                return;
+
+            for(int i = 0; i < audioBufferCopy.Length; i++)
+            {
+                data[i] = audioBufferCopy[i];
+            }
+        }
+
         private void OnAudioRead(IntPtr userdata, IntPtr stream, int len)
         {
             if (onAudioRead != null)
@@ -160,8 +207,14 @@ namespace SkylineEngine
                 }
             }
 
+            float t = 1.0f / ushort.MaxValue;
+
             for(int i = 0; i < audioBuffer.Length; i++)
+            {
                 audioBuffer[i] = (short)(volume * audioBuffer[i]);
+                
+                audioBufferCopy[i] = t * audioBuffer[i];
+            }
 
             Marshal.Copy(audioBuffer, 0, stream, audioBuffer.Length);
         }

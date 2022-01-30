@@ -197,6 +197,10 @@ namespace SkylineEngine
                     var renderer = g.GetComponent<MeshRenderer>();
                     renderer.doubleSided = true;
                     break;
+                case PrimitiveType.Circle:
+                    material.shader = Resources.LoadShader(DefaultShader.vertex, DefaultShader.fragment, "Default");
+                    filter.mesh = MeshPrimitive.CreateCircle(24, scale);
+                    break;
                 default:
                     break;
             }

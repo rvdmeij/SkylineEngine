@@ -25,8 +25,8 @@ uniform vec3 u_LightDirection;
 uniform vec3 u_LightPosition;
 uniform vec4 u_clippingPlane;
 
-float fogDensity = 0.0000002;
-float fogGradient = 1.5;
+uniform float u_FogDensity;
+uniform float u_FogGradient;
 
 void main()
 {
@@ -43,7 +43,7 @@ void main()
     TexCoord0 = uv;
 
     float distance = length(positionRelativeToCam.xyz);
-    Visibility = exp(-pow((distance*fogDensity), fogGradient));
+    Visibility = exp(-pow((distance*u_FogDensity), u_FogGradient));
     Visibility = clamp(Visibility, 0.0, 1.0);
 }";
 
@@ -68,8 +68,7 @@ uniform sampler2D u_Texture2;
 uniform sampler2D u_Texture3;
 uniform sampler2D u_Texture4;
 uniform int u_ShowGrid;
-uniform vec2 u_Mouse;
-uniform vec2 u_ScreenSize;
+uniform vec2 u_GridUV;
 out vec4 outColor;
 
 vec4 light_color = vec4( 1.0,  1.0,  1.0, 1.0);
@@ -123,6 +122,19 @@ void main()
     outColor = backgroundTextureColor + rTextureColor + gTextureColor + bTextureColor;
     outColor = outColor * CreateColor();
     outColor = mix(u_SkyColor, outColor, Visibility);
+
+    if(u_ShowGrid == 1)
+    {
+        vec2 uv = TexCoord0;
+        vec2 gridUV = uv * u_GridUV;
+        vec2 grid = abs(fract(gridUV - 0.5) - 0.5) / fwidth(gridUV);
+        float line = min(grid.x, grid.y);
+
+        float x = 1.0 - min(line, 1.0);
+        vec4 gridColor = vec4(vec3(1.0 - min(line, 1.0)) * 30, 1.0);
+        gridColor.a = 0.0;
+        outColor = mix(outColor, gridColor, 0.005);
+    }
 }";
     }
 }

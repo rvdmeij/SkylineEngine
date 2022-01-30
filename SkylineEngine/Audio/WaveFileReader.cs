@@ -86,14 +86,14 @@ namespace SkylineEngine.Audio
         public void Close()
         {
             m_canRead = false;
-            stream.Close();
+            stream?.Close();
         }
 
         public void Dispose()
         {
             m_canRead = false;
-            stream.Close();
-            stream.Dispose();
+            stream?.Close();
+            stream?.Dispose();
         }
 
         public void ResetPosition()
@@ -119,10 +119,14 @@ namespace SkylineEngine.Audio
             {
                 int bytesRead = stream.Read(m_buffer, 0, (int)currentChunkSize);                
 
+                currentChunk++;
+
+                //If end of stream is reached, fill end of buffer with silence to avoid clicking
+                if(currentChunk > streamInfo.totalChunks)
+                    Array.Fill<byte>(m_buffer, 0, (int)currentChunkSize, (int)(m_buffer.Length - currentChunkSize));
+
                 if (onRead != null)
                     onRead(m_buffer, (int)currentChunkSize);
-
-                currentChunk++;
 
                 if (currentChunk > streamInfo.totalChunks)
                 {
