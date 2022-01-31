@@ -169,52 +169,109 @@ namespace SkylineEngine
         public void Draw()
         {
             GL.Disable(EnableCap.DepthTest);
-            //GL.DepthMask(false);
             GL.Disable(EnableCap.CullFace);
             GL.DepthFunc(DepthFunction.Lequal);
+            GL.BindVertexArray(VAO);            
+            GL.ActiveTexture(TextureUnit.Texture0);            
+            GL.BindTexture(TextureTarget.TextureCubeMap, m_texture);            
+            GL.DrawArrays(OpenTK.Graphics.OpenGL.PrimitiveType.Triangles, 0, 36);            
+            GL.BindVertexArray(0);            
+            GL.UseProgram(0);            
+            GL.ActiveTexture(TextureUnit.Texture0);            
+            GL.BindTexture(TextureTarget.Texture2D, 0);            
+            GL.DepthFunc(DepthFunction.Less);
+            GL.Enable(EnableCap.CullFace);        
+            GL.Enable(EnableCap.DepthTest);            
+        }
+    }
 
+    public class ProceduralSkybox
+    {
+        private Vector3[] verticesBuffer;
+        private Shader shader;
+        private uint VAO;
+        private uint VBO;
+
+        public ProceduralSkybox()
+        {
+            List<Vector3> vertices = new List<Vector3>();
+
+            vertices.Add(new Vector3(-1.0f, 1.0f, -1.0f));
+            vertices.Add(new Vector3(-1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, -1.0f));
+            vertices.Add(new Vector3(-1.0f, 1.0f, -1.0f));
+
+            vertices.Add(new Vector3(-1.0f, -1.0f, 1.0f));
+            vertices.Add(new Vector3(-1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(-1.0f, 1.0f, -1.0f));
+            vertices.Add(new Vector3(-1.0f, 1.0f, -1.0f));
+            vertices.Add(new Vector3(-1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(-1.0f, -1.0f, 1.0f));
+
+            vertices.Add(new Vector3(1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, -1.0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, -1.0f));
+
+            vertices.Add(new Vector3(-1.0f, -1.0f, 1.0f));
+            vertices.Add(new Vector3(-1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, 1.0f));
+            vertices.Add(new Vector3(-1.0f, -1.0f, 1.0f));
+
+            vertices.Add(new Vector3(-1.0f, 1.0f, -1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, -1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(-1.0f, 1.0f, 1.0f));
+            vertices.Add(new Vector3(-1.0f, 1.0f, -1.0f));
+
+            vertices.Add(new Vector3(-1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(-1.0f, -1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(-1.0f, -1.0f, 1.0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, 1.0f));
+
+            verticesBuffer = vertices.ToArray();
+        }
+
+        public void SetShader(Shader shader)
+        {
+            this.shader = shader;
+            this.shader.Bind();
+        }
+
+        public void Bind()
+        {
+            int size = verticesBuffer.Length * Marshal.SizeOf(typeof(Vector3));
+
+            GL.GenVertexArrays(1, out VAO);            
+            GL.GenBuffers(1, out VBO);            
+            GL.BindVertexArray(VAO);            
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);            
+            GL.BufferData(BufferTarget.ArrayBuffer, size, verticesBuffer, BufferUsageHint.StaticDraw);
+            GL.EnableVertexAttribArray(0);            
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+        }
+
+        public void Draw()
+        {
+            GL.Disable(EnableCap.DepthTest);
+            GL.Disable(EnableCap.CullFace);
+            GL.DepthFunc(DepthFunction.Lequal);
             GL.BindVertexArray(VAO);
-            
-            GL.ActiveTexture(TextureUnit.Texture0);
-            
-            GL.BindTexture(TextureTarget.TextureCubeMap, m_texture);
-            
-            GL.DrawArrays(OpenTK.Graphics.OpenGL.PrimitiveType.Triangles, 0, 36);
-            
-            GL.BindVertexArray(0);
-            
-            GL.UseProgram(0);
-            
-            GL.ActiveTexture(TextureUnit.Texture0);
-            
-            GL.BindTexture(TextureTarget.Texture2D, 0);
-            
+            GL.DrawArrays(OpenTK.Graphics.OpenGL.PrimitiveType.Triangles, 0, 36);            
+            GL.BindVertexArray(0);            
+            GL.UseProgram(0);                     
             GL.DepthFunc(DepthFunction.Less);
             GL.Enable(EnableCap.CullFace);
-            //GL.DepthMask(true);
-            
-            GL.Enable(EnableCap.DepthTest);
-            
-        }
-
-        public Vector3[] GetVertices()
-        {
-            return verticesBuffer;
-        }
-
-        public uint GetVAO()
-        {
-            return VAO;
-        }
-
-        public uint GetVBO()
-        {
-            return VBO;
-        }
-
-        public uint GetTexture()
-        {
-            return m_texture;
+            GL.Enable(EnableCap.DepthTest);             
         }
     }
 }

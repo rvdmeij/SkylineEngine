@@ -19,7 +19,7 @@ void main()
     gl_Position = u_Projection * u_View * vec4(aPos, 1.0);
 }";
 
-        public const string fragment = 
+    public const string fragment = 
 @"#version 330 core
 
 out vec4 FragColor;

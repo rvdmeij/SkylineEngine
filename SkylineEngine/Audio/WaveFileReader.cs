@@ -78,6 +78,8 @@ namespace SkylineEngine.Audio
             wavefileSpecification.subChunk2Id = BitConverter.ToInt32(m_buffer, 36);
             wavefileSpecification.subChunk2Size = BitConverter.ToInt32(m_buffer, 40);
 
+            stream.Seek(44, SeekOrigin.Begin);
+
             m_canRead = true;
 
             return true;
@@ -117,6 +119,8 @@ namespace SkylineEngine.Audio
 
             if (stream.CanRead)
             {
+                Array.Fill<byte>(m_buffer, 0);
+                
                 int bytesRead = stream.Read(m_buffer, 0, (int)currentChunkSize);                
 
                 currentChunk++;

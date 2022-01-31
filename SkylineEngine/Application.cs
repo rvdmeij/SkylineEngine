@@ -130,13 +130,44 @@ namespace SkylineEngine
         {
             imGuiControl.SetButtonDown(button);
             Input.SetMouseState((MouseButton)button, 0, 1, 0);
-            
+
+            if(button == 1)
+            {
+                Input.SetStateUp(KeyCode.Mouse1, 0);
+                Input.SetStateDown(KeyCode.Mouse1, 1);
+            }
+            else if(button == 2)
+            {
+                Input.SetStateUp(KeyCode.Mouse2, 0);
+                Input.SetStateDown(KeyCode.Mouse2, 1);
+            }
+            else if(button == 3)
+            {
+                Input.SetStateUp(KeyCode.Mouse3, 0);
+                Input.SetStateDown(KeyCode.Mouse3, 1);
+            }
         }
 
         private void OnMouseUp(byte button)
         {
             imGuiControl.SetButtonUp(button);
             Input.SetMouseState((MouseButton)button, 1, 0, 0);
+
+            if(button == 1)
+            {
+                Input.SetStateDown(KeyCode.Mouse1, 0);
+                Input.SetStateUp(KeyCode.Mouse1, 1);
+            }
+            else if(button == 2)
+            {
+                Input.SetStateDown(KeyCode.Mouse2, 0);
+                Input.SetStateUp(KeyCode.Mouse2, 1);
+            }
+            else if(button == 3)
+            {
+                Input.SetStateDown(KeyCode.Mouse3, 0);
+                Input.SetStateUp(KeyCode.Mouse3, 1);
+            }
         }
 
         private void OnMouseScroll(float x, float y)

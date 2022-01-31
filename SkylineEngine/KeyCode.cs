@@ -101,7 +101,7 @@
         RightControl = SDL_Scancode.SDL_SCANCODE_RCTRL,
         //Alt = 0x12,
         LeftAlt = SDL_Scancode.SDL_SCANCODE_LALT,
-        RightAlt = SDL_Scancode.SDL_SCANCODE_RALT
+        RightAlt = SDL_Scancode.SDL_SCANCODE_RALT,
         //LeftCommand = 0xFFE9,
         //LeftApple = 0,
         //LeftWindows = 0,
@@ -114,6 +114,10 @@
         //SysReq = 0,
         //Break = 0,
         //Menu = 0, 
+
+        Mouse1,
+        Mouse2,
+        Mouse3
     }
 
     public enum SDL_Scancode

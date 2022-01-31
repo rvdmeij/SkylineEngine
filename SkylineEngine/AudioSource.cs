@@ -197,13 +197,14 @@ namespace SkylineEngine
                 }
                 else
                 {
-                    for (int x = 0; x < audioBuffer.Length; x += channels)
-                    {
-                        audioBuffer[x] = 0;
+                    Array.Fill<short>(audioBuffer, 0);
+                    // for (int x = 0; x < audioBuffer.Length; x += channels)
+                    // {
+                    //     audioBuffer[x] = 0;
 
-                        if (channels == 2)
-                            audioBuffer[x + 1] = 0;
-                    }
+                    //     if (channels == 2)
+                    //         audioBuffer[x + 1] = 0;
+                    // }
                 }
             }
 
