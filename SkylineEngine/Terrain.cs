@@ -212,11 +212,13 @@ namespace SkylineEngine
             m_material.skyColor = new Color32(255, 255, 255, 255);
             m_material.shader = shader;
 
-            m_material.textures.Add(Resources.Load<Texture>("Default"));
-            m_material.textures.Add(Resources.Load<Texture>("Default"));
-            m_material.textures.Add(Resources.Load<Texture>("Default"));
-            m_material.textures.Add(Resources.Load<Texture>("Default"));
-            m_material.textures.Add(Resources.Load<Texture>("Default"));
+            var texture = Resources.Load<Texture>("Default");
+
+            m_material.textures.Add(texture);
+            m_material.textures.Add(texture);
+            m_material.textures.Add(texture);
+            m_material.textures.Add(texture);
+            m_material.textures.Add(texture);
 
             m_width = 200;
             m_depth = 200;
@@ -235,6 +237,18 @@ namespace SkylineEngine
         public int GetNumVertices()
         {
             return m_meshFilter.mesh.vertices.Length;
+        }
+
+        public void SetHeight(int x, int y, float height)
+        {
+            int vertsPerRow = width + 1;
+
+            int index = (y * vertsPerRow) + x;
+
+            if(index >= m_meshFilter.mesh.vertices.Length)
+                return;
+
+            m_meshFilter.mesh.vertices[index].position.y = height;
         }
 
         public void SetHeight(int index, float height)

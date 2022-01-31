@@ -151,22 +151,14 @@ namespace SkylineEngine
                                                t.M31, t.M32, t.M33, t.M34, t.M41, t.M42, t.M43, t.M44);
 
             DefaultMotionState motionState = new DefaultMotionState(transformation);
-
             RigidBodyConstructionInfo rigidBodyCI = new RigidBodyConstructionInfo(rb.mass, motionState, collider.shape, localInertia);
-
             RigidBody rigidBody = new RigidBody(rigidBodyCI);
-
             rbInfo.rigidBody = rigidBody;
             rbInfo.collisionShape = collider.shape;
-
             dynamicsWorld.AddRigidBody(rigidBody);
-
             rigidBody.UserObject = rb;
-
             rb.SetRigidBody(rigidBody);
-
             rigidbodyInfo.Add(rbInfo);
-
             Debug.Log("Added " + gameObject.name + " to PhysicsPipeline with ID " + rb.InstanceId);
         }
 
