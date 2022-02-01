@@ -8,7 +8,7 @@ Unity inspired game engine written in C#
 - https://www.nuget.org/packages/AssimpNet/4.1.0
 - https://www.nuget.org/packages/BulletSharp.NetCore/
 - https://github.com/libsdl-org/SDL (build from source or install through package manager)
-- https://github.com/japajoe/imgui (build from source)
+- https://github.com/japajoe/imgui (build from source or download release https://github.com/japajoe/imgui/releases/tag/imgui)
 
 # Example
 
