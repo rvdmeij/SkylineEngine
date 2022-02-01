@@ -44,6 +44,16 @@ namespace SkylineEngine
             }
         }
 
+        public static int FrameBufferRefractionTexture
+        {
+            get 
+            { 
+                if(waterFrameBuffer == null)
+                    return 0;
+                return waterFrameBuffer.RefractionTexture;
+            }
+        }
+
         public static void Initialize()
         {
             camObject = new GameObject();
@@ -77,9 +87,9 @@ namespace SkylineEngine
 
             //GL.Enable(EnableCap.ClipDistance0);
             
-            // waterFrameBuffer.BindReflectionFrameBuffer();
-            // Render();
-            // waterFrameBuffer.UnbindCurrentFrameBuffer();
+            waterFrameBuffer.BindRefractionFrameBuffer();
+            Render();
+            waterFrameBuffer.UnbindCurrentFrameBuffer();
             
             //GL.Disable(EnableCap.ClipDistance0);
             Render();

@@ -239,6 +239,24 @@ namespace SkylineEngine
             return m_meshFilter.mesh.vertices.Length;
         }
 
+        public bool SampleHeightAtPoint(int x, int y, out float height)
+        {
+            height = 0;
+            int vertsPerRow = width + 1;
+            int index = (y * vertsPerRow) + x;
+
+            if(x < 0 || y < 0)
+                return false;
+
+            if(index >= m_meshFilter.mesh.vertices.Length)
+            {                
+                return false;
+            }
+
+            height = m_meshFilter.mesh.vertices[index].position.y;
+            return true;
+        }
+
         public void SetHeight(int x, int y, float height)
         {
             int vertsPerRow = width + 1;
@@ -259,13 +277,17 @@ namespace SkylineEngine
             m_meshFilter.mesh.vertices[index].position.y = height;
         }
 
-        public void Update()
+        public void Update(bool updateCollider = true)
         {
             m_meshFilter.mesh.RecalculateNormals();
             m_meshFilter.mesh.Update();
-            m_collider.mesh = m_meshFilter.mesh;
-            PhysicsPipeline.PopData(m_rigidbody);
-            PhysicsPipeline.PushData(m_rigidbody);
+
+            if(updateCollider)
+            {
+                m_collider.mesh = m_meshFilter.mesh;
+                PhysicsPipeline.PopData(m_rigidbody);
+                PhysicsPipeline.PushData(m_rigidbody);
+            }
         }
 
         private void Reinitialize()

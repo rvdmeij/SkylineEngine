@@ -15,8 +15,8 @@ namespace SkylineEngine
         [DllImport("imgui", CallingConvention = CallingConvention.Cdecl)]
         private static extern uint GLInitGlew(bool experimental);
 
-        public Application(string title, int width, int height, int versionMajor, int versionMinor, bool vsync = true) 
-        : base(title, width, height, versionMajor, versionMinor, vsync)
+        public Application(string title, int width, int height, int versionMajor, int versionMinor, bool windowed = true, bool vsync = true) 
+        : base(title, width, height, versionMajor, versionMinor, windowed, vsync)
         {
             created += OnCreated;
             close += OnClose;
@@ -45,8 +45,6 @@ namespace SkylineEngine
             {
                 Console.WriteLine("Failed to initialize ImGui");
             }
-
-
 
             GL.Enable(EnableCap.DepthTest);
             SDL.SDL_GetWindowSize(mainWindow, out int width, out int height);

@@ -44,6 +44,7 @@ namespace SkylineEngine
         private bool run;
         private int versionMajor;
         private int versionMinor;
+        private bool windowed;
         private bool vsync;
         private static ApplicationBase instance;
 
@@ -62,13 +63,14 @@ namespace SkylineEngine
             get { return mainWindow; }
         }
 
-        public ApplicationBase(string title, int width, int height, int versionMajor, int versionMinor, bool vsync = true)
+        public ApplicationBase(string title, int width, int height, int versionMajor, int versionMinor, bool windowed, bool vsync = true)
         {
             this.title = title;
             this.width = width;
             this.height = height;
             this.versionMajor = versionMajor;
             this.versionMinor = versionMinor;
+            this.windowed = windowed;
             this.vsync = vsync;
             instance = this;
         }
@@ -81,7 +83,16 @@ namespace SkylineEngine
                 return false;
             }
 
-            mainWindow = SDL.SDL_CreateWindow(title, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, width, height, SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE);
+            SDL.SDL_WindowFlags flags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | 
+                                        SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE;
+                                    
+            if(!windowed)
+            {
+                //flags |= SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN;
+                flags |= SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP;
+            }
+
+            mainWindow = SDL.SDL_CreateWindow(title, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED, width, height, flags);
 
             if (mainWindow == IntPtr.Zero)
             {

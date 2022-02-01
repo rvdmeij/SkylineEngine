@@ -34,6 +34,7 @@ void main()
     vec4 positionRelativeToCam = u_View * worldPosition;
 
     //gl_ClipDistance[0] = dot(worldPosition, u_clippingPlane);
+    //gl_ClipDistance[0] = 1;
 
     LightDirection  = normalize(u_LightDirection);
     LightPosition = u_LightPosition;
@@ -69,6 +70,8 @@ uniform sampler2D u_Texture3;
 uniform sampler2D u_Texture4;
 uniform int u_ShowGrid;
 uniform vec2 u_GridUV;
+uniform vec2 u_Resolution;
+uniform vec2 u_Mouse;
 out vec4 outColor;
 
 vec4 light_color = vec4( 1.0,  1.0,  1.0, 1.0);
@@ -84,6 +87,20 @@ float Circle(vec2 uv, vec2 p, float r, float blur)
 	float d = length(uv - p);
 	float c = smoothstep(r, r - blur, d);
 	return c;
+}
+
+vec4 Circle2(float radius)
+{
+    vec2 st = gl_FragCoord.xy/u_Resolution.xy;
+
+    vec2 dist = u_Mouse.xy/u_Resolution.xy - st.xy;
+    dist.x *= u_Resolution.x/u_Resolution.y;
+
+    float mouse_pct = length(dist);
+
+    mouse_pct = step(radius, mouse_pct);
+    vec3 m_color = vec3(mouse_pct) + vec3(0.1,0,0);
+    return vec4(m_color, 0.1f);
 }
 
 vec4 CreateColor()

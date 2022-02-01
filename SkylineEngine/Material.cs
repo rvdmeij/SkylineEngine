@@ -373,7 +373,7 @@ namespace SkylineEngine
             if (uniformProjection != null)
                 shader.SetMat4(uniformProjection.location, projection);
             if (uniformResolution != null)
-                shader.SetFloat2(uniformResolution.location, resolution);
+                shader.SetFloat2(uniformResolution.location, Screen.size);
             if (uniformUVScale != null)
                 shader.SetFloat2(uniformUVScale.location, uvScale);
             if (uniformTime != null)

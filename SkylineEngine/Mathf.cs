@@ -193,5 +193,18 @@ namespace SkylineEngine
             return num8;
         }
 
+        public static float SnapToGrid(float value, float gridSize)
+        {
+            return value == 0.0f ? 0.0f : Mathf.Floor(value / gridSize) * gridSize;
+        }
+
+        public static Vector3 SnapToGrid(Vector3 position, Vector3 gridSize)
+        {
+            return new Vector3(
+                SnapToGrid(position.x, gridSize.x),
+                SnapToGrid(position.y, gridSize.y),
+                SnapToGrid(position.z, gridSize.z)
+            );
+        }
     }
 }
