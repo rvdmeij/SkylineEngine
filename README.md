@@ -24,7 +24,7 @@ namespace SkylineEngineApplication
 
         static void Main(string[] args)
         {
-            application = new Application("Skyline Engine", 512, 512, 3, 3, false);
+            application = new Application("Skyline Engine", 512, 512, 3, 3, true, false);
             application.created += OnCreated;
             application.Run();            
         }
