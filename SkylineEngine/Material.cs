@@ -210,6 +210,7 @@ namespace SkylineEngine
         public Matrix4 projection;
         public bool alphaBlend;
         public bool showGrid;
+        public bool showCircle;
         public Vector2 gridUV;
         public int identifier;
         public OpenTK.Graphics.OpenGL.PrimitiveType mode;
@@ -230,6 +231,7 @@ namespace SkylineEngine
         public float strength;
         public float opacity;
         public Vector4 clippingPlane;
+        public float circleRadius;
 
         private UniformInfo uniformIdentifier;
         private UniformInfo uniformAmbientColor;
@@ -251,9 +253,12 @@ namespace SkylineEngine
         private UniformInfo uniformTime;
         private UniformInfo uniformStrength;
         private UniformInfo uniformIsSelected;
+        private UniformInfo uniformShowCircle;
         private UniformInfo uniformShowGrid;
         private UniformInfo uniformGridUV;
         private UniformInfo uniformMouse;
+        private UniformInfo uniformMouseWorldSpace;
+        private UniformInfo uniformCircleRadius;
         private UniformInfo uniformScreenSize;
         private UniformInfo uniformCamPosition;
         private UniformInfo uniformClippingPlane;
@@ -313,8 +318,11 @@ namespace SkylineEngine
             uniformTime = shader.GetUniform("u_Time");
             uniformIsSelected = shader.GetUniform("u_IsSelected");
             uniformShowGrid = shader.GetUniform("u_ShowGrid");
+            uniformShowCircle = shader.GetUniform("u_ShowCircle");
             uniformGridUV = shader.GetUniform("u_GridUV");
             uniformMouse = shader.GetUniform("u_Mouse");
+            uniformMouseWorldSpace = shader.GetUniform("u_MouseWorldSpace");
+            uniformCircleRadius = shader.GetUniform("u_CircleRadius");
             uniformScreenSize = shader.GetUniform("u_ScreenSize");
             uniformCamPosition = shader.GetUniform("u_CamPosition");
             uniformStrength = shader.GetUniform("u_Strength");
@@ -380,10 +388,16 @@ namespace SkylineEngine
                 shader.SetFloat(uniformTime.location, Time.time);
             if (uniformShowGrid != null)
                 shader.SetInt(uniformShowGrid.location, showGrid ? 1 : 0);
+            if(uniformShowCircle != null)
+                shader.SetInt(uniformShowCircle.location, showCircle ? 1 : 0);
             if(uniformGridUV!= null)
                 shader.SetFloat2(uniformGridUV.location, gridUV);
             if (uniformMouse != null)
                 shader.SetFloat2(uniformMouse.location, Input.GetMousePosition());
+            if(uniformMouseWorldSpace != null)
+                shader.SetFloat3(uniformMouseWorldSpace.location, Input.GetMouseWorldSpacePosition());
+            if(uniformCircleRadius != null)
+                shader.SetFloat(uniformCircleRadius.location, circleRadius);
             if (uniformScreenSize != null)
                 shader.SetFloat2(uniformScreenSize.location, Screen.size);
             if (uniformCamPosition != null)

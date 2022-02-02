@@ -69,9 +69,10 @@ uniform sampler2D u_Texture2;
 uniform sampler2D u_Texture3;
 uniform sampler2D u_Texture4;
 uniform int u_ShowGrid;
+uniform int u_ShowCircle;
 uniform vec2 u_GridUV;
-uniform vec2 u_Resolution;
-uniform vec2 u_Mouse;
+uniform vec3 u_MouseWorldSpace;
+uniform float u_CircleRadius;
 out vec4 outColor;
 
 vec4 light_color = vec4( 1.0,  1.0,  1.0, 1.0);
@@ -87,20 +88,6 @@ float Circle(vec2 uv, vec2 p, float r, float blur)
 	float d = length(uv - p);
 	float c = smoothstep(r, r - blur, d);
 	return c;
-}
-
-vec4 Circle2(float radius)
-{
-    vec2 st = gl_FragCoord.xy/u_Resolution.xy;
-
-    vec2 dist = u_Mouse.xy/u_Resolution.xy - st.xy;
-    dist.x *= u_Resolution.x/u_Resolution.y;
-
-    float mouse_pct = length(dist);
-
-    mouse_pct = step(radius, mouse_pct);
-    vec3 m_color = vec3(mouse_pct) + vec3(0.1,0,0);
-    return vec4(m_color, 0.1f);
 }
 
 vec4 CreateColor()
@@ -126,6 +113,26 @@ vec4 CreateColor()
     return final_color;    
 }
 
+vec4 CreateCircle()
+{
+    vec4 color = vec4(0);
+    float dist = length(FragPosition.xz - u_MouseWorldSpace.xz);
+
+    if(dist <= u_CircleRadius)
+    {
+        if(dist >= (u_CircleRadius * 0.99))
+        {
+            color = vec4(0, 1, 0, 1);
+        }
+        else
+        {
+            color = vec4(0.1, 0.1, 0.0, 1.0);
+        }
+    }
+
+    return color;
+}
+
 void main()
 {
     vec4 blendMapColor = texture(u_Texture0, TexCoord0);
@@ -139,6 +146,12 @@ void main()
     outColor = backgroundTextureColor + rTextureColor + gTextureColor + bTextureColor;
     outColor = outColor * CreateColor();
     outColor = mix(u_SkyColor, outColor, Visibility);
+
+    if(u_ShowCircle == 1)
+    {
+        vec4 circleColor = CreateCircle();
+        outColor += circleColor;
+    }
 
     if(u_ShowGrid == 1)
     {

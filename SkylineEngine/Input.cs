@@ -227,6 +227,11 @@ namespace SkylineEngine
             return mouse.Position;
         }
 
+        public static Vector3 GetMouseWorldSpacePosition()
+        {
+            return mouse.WorldSpacePosition;
+        }
+
         public static Vector2 GetMouseDelta()
         {
             return mouse.PositionDelta;
@@ -235,6 +240,11 @@ namespace SkylineEngine
         internal static void SetMousePosition(Vector2 position)
         {
             mouse.SetPosition(position);
+        }
+
+        public static void SetMouseWorldSpacePosition(Vector3 position)
+        {
+            mouse.SetWorldSpacePosition(position);
         }
 
         internal static void SetMouseDelta(Vector2 delta)

@@ -23,11 +23,17 @@ namespace SkylineEngine
         private Dictionary<MouseButton, ButtonState> m_buttonstates;
         private Vector2 m_position;
         private Vector2 m_positionDelta;
+        private Vector3 m_worldspacePosition;
         private float m_scrollDirection;
 
         public Vector2 Position 
         { 
             get { return m_position; } 
+        }
+
+        public Vector3 WorldSpacePosition
+        {
+            get { return m_worldspacePosition; }
         }
 
         public Vector2 PositionDelta
@@ -70,6 +76,11 @@ namespace SkylineEngine
         public void SetPosition(Vector2 mousePosition)
         {
             m_position = mousePosition;
+        }
+
+        public void SetWorldSpacePosition(Vector3 position)
+        {
+            m_worldspacePosition = position;
         }
 
         public void SetPositionDelta(Vector2 mousePositionDelta)

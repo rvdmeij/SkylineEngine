@@ -178,6 +178,30 @@ namespace SkylineEngine
             }
         }
 
+        public bool showCircle
+        {
+            get
+            {
+                return material.showCircle;
+            }
+            set
+            {
+                material.showCircle = value;
+            }
+        }
+
+        public float circleRadius
+        {
+            get
+            {
+                return material.circleRadius;
+            }
+            set
+            {
+                material.circleRadius = value;
+            }
+        }
+
         public Vector2 gridUV
         {
             get
@@ -202,6 +226,7 @@ namespace SkylineEngine
         private void Create()
         {
             var shader = Resources.LoadShader(TerrainShader.vertex, TerrainShader.fragment, "Terrain");
+            //var shader = Resources.Load<Shader>("res/Shaders/Terrain.shader");
 
             gameObject.name = "Terrain";
 

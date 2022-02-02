@@ -1,10 +1,11 @@
+using System;
 using System.Runtime.InteropServices;
 using SkylineEngine.Utilities;
 
 namespace SkylineEngine
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vector2i
+    public struct Vector2i : IComparable
     {
         public int x;
         public int y;
@@ -79,6 +80,15 @@ namespace SkylineEngine
         public bool Equals(Vector2i other)
         {
             return x == other.x && y == other.y;
+        }
+
+        public int CompareTo(object obj)
+        {
+            Vector2i other = (Vector2i)obj;
+
+            if(other.x == x && other.y == y)
+                return 0;
+            return 1;
         }
 
         public static implicit operator Vector2i(Vector3 rhs)
